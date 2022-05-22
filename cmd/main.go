@@ -4,10 +4,10 @@ import (
 	"log"
 	"os"
 
-	"github.com/JEONG-YUNHO01/test-jwt/handler"
+	"github.com/DDD-Community/DailyChaCha-server/handler"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
-	md "github.com/labstack/echo/v4/middleware"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
@@ -27,7 +27,7 @@ func main() {
 	e.POST("/api/signin", handler.SignIn)
 
 	// 목데이터로 테스트
-	e.GET("/api/getlist", handler.MockData(), md.JWTWithConfig(md.JWTConfig{
+	e.GET("/api/getlist", handler.MockData(), middleware.JWTWithConfig(middleware.JWTConfig{
 		SigningKey:  []byte(os.Getenv("SECRET_KEY")),
 		TokenLookup: "cookie:access-token",
 	}))

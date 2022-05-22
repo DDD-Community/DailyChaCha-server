@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/JEONG-YUNHO01/test-jwt/db"
-	"github.com/JEONG-YUNHO01/test-jwt/helper"
-	"github.com/JEONG-YUNHO01/test-jwt/models"
+	"github.com/DDD-Community/DailyChaCha-server/db"
+	"github.com/DDD-Community/DailyChaCha-server/helper"
+	"github.com/DDD-Community/DailyChaCha-server/models"
 
 	"github.com/labstack/echo/v4"
 )

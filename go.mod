@@ -1,4 +1,4 @@
-module github.com/JEONG-YUNHO01/test-jwt
+module github.com/DDD-Community/DailyChaCha-server
 
 go 1.17
 
