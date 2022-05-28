@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt"
+	"github.com/pkg/errors"
 )
 
 func CreateJWT(Email string) (string, error) {
@@ -17,7 +18,7 @@ func CreateJWT(Email string) (string, error) {
 
 	tk, err := aToken.SignedString(mySigningKey)
 	if err != nil {
-		return "", err
+		return "", errors.Wrap(err, "aToken.SignedString")
 	}
 	return tk, nil
 }
