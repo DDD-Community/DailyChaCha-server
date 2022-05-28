@@ -1,0 +1,27 @@
+run:
+  timeout: 5m
+linters:
+  enable:
+    - gomodguard
+    - ifshort
+    - exportloopref
+    - wrapcheck
+    - unparam
+linters-settings:
+  wrapcheck:
+    # See https://github.com/tomarrell/wrapcheck#configuration for more information.
+    ignoreSigs:
+      - .WithDetails(
+      - .Errorf(
+      - errors.New(
+      - errors.Unwrap(
+      - .Wrap(
+      - .Wrapf(
+      - .WithMessage(
+      - .WithMessagef(
+      - .WithStack(
+    ignorePackageGlobs:
+      - github.com/banksalad/*
+      - golang.org/x/sync/errgroup
+      - encoding/*
+      - github.com/pkg/*
