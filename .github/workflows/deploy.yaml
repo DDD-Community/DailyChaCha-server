@@ -1,0 +1,9 @@
+name: ci
+
+on:
+  - push
+
+jobs:
+  deploy:
+  # aws 로그인
+  # ecr로 생성된 이미지를 pull하여 docker run -p 8000:1323 어쩌구 저쩌구 하기

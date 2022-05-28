@@ -12,15 +12,6 @@ jobs:
         with:
           fetch-depth: 5
       
-      - name: Docker meta
-        id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@v1
-        with:
-          images: teichae/node
-          tag-semver: |
-            {{version}}
-            {{major}}.{{minor}}
-      
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       
