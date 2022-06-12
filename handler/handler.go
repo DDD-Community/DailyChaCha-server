@@ -1,7 +1,10 @@
 package handler
 
 import (
+	"os"
+
 	"github.com/labstack/echo/v4"
+	md "github.com/labstack/echo/v4/middleware"
 )
 
 func ApplyHandler(e *echo.Echo) {
@@ -12,5 +15,8 @@ func ApplyHandler(e *echo.Echo) {
 	e.POST("/api/signin", signIn())
 
 	// 목데이터로 테스트
-	e.GET("/api/getlist", healthCheck())
+	e.GET("/api/getlist", healthCheck(), md.JWTWithConfig(md.JWTConfig{
+		SigningKey:  []byte(os.Getenv("SECRET_KEY")),
+		TokenLookup: "cookie:access-token",
+	}))
 }
