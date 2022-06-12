@@ -5,5 +5,28 @@ on:
 
 jobs:
   deploy:
-  # aws 로그인
-  # ecr로 생성된 이미지를 pull하여 docker run -p 8000:1323 어쩌구 저쩌구 하기
+    needs: build  # build 후에 실행되도록 정의
+    name: Deploy
+    runs-on: [ self-hosted, label-go ] # AWS ./configure에서 사용할 label명
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 5
+      
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Docker run
+        run: |
+          docker stop dailychacha && docker rm dailychacha && docker rmi dailycahcah:latest
+          docker run -d -p 80:1323 --name go_cicd --restart always dailycahcah:latest
