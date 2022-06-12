@@ -13,7 +13,7 @@ func healthCheck() echo.HandlerFunc {
 		// Mock Data를 생성한다.
 		list := map[string]string{
 			"1": "고양이",
-			"2": "사자",
+			"2": "사후자",
 			"3": "호랑이",
 		}
 		if err := c.JSON(http.StatusOK, list); err != nil {
