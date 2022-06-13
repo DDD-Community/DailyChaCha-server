@@ -14,7 +14,7 @@ func ApplyHandler(e *echo.Echo) {
 	// 로그인 API(현재는 테스트용)
 	e.POST("/api/sign-in", signIn())
 
-	// 로그인 API(현재는 테스트용)
+	// 애플 로그인 API(현재는 테스트용)
 	e.POST("/api/apple-sign-in", appleSignIn())
 
 	// 목데이터로 테스트

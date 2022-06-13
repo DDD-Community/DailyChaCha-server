@@ -48,7 +48,7 @@ jobs:
   
   deploy:
     name: deploy
-    runs-on: [ self-hosted, label-go ] # AWS ./configure에서 사용할 label명
+    runs-on: [ self-hosted, label-go ]
     needs: [lint, build]
     steps:
       - name: Checkout

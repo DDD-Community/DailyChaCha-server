@@ -9,11 +9,11 @@ import (
 )
 
 func Connect() *gorm.DB {
-	USER := os.Getenv("DBUSER") // DB 유저명
-	PASS := os.Getenv("DBPASS") // DB 유저의 패스워드
+	USER := os.Getenv("DBUSER")
+	PASS := os.Getenv("DBPASS")
 	HOST := os.Getenv("DBHOST")
 	PORT := 3306
-	DBNAME := os.Getenv("DBNAME") // 사용할 DB 명을 입력
+	DBNAME := os.Getenv("DBNAME")
 	dsn := fmt.Sprintf(
 		"%s:%s@tcp(%s:%d)/%s?parseTime=true",
 		USER,
