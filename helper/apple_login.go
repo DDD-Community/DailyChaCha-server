@@ -21,7 +21,8 @@ func ValidateAuthorizationToken(
 	keyID string,
 ) (*AuthenticatedAppleUser, error) {
 	secret, err := apple.GenerateClientSecret(privateKey, teamID, clientID, keyID)
-	fmt.Print("secret", secret)
+	fmt.Println("privateKey", privateKey)
+	fmt.Println("secret", secret, err)
 	if err != nil {
 		return nil, err
 	}
