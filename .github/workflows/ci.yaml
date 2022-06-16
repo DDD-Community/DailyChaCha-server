@@ -66,7 +66,7 @@ jobs:
         run: |
           docker stop go_cicd && docker rm go_cicd && docker rmi solone313/dailycahcah:latest
           docker image pull solone313/dailycahcah:latest
-          docker run -d -e DBUSER='' \
+          docker run -d -e DBUSER=${{ secrets.DBUSER }} \
             -e DBPASS=${{ secrets.DBPASS }} \
             -e DBNAME=${{ secrets.DBNAME }} \
             -e DBHOST=${{ secrets.DBHOST }} \
