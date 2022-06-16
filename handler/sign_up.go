@@ -31,13 +31,13 @@ func signUp() echo.HandlerFunc {
 		}
 
 		// 비밀번호를 bycrypt 라이브러리로 해싱 처리
-		hashpw, err := helper.HashPassword(user.Password)
+		hashpw, err := helper.HashPassword(*user.Password)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, map[string]string{
 				"message": err.Error(),
 			})
 		}
-		user.Password = hashpw
+		user.Password = &hashpw
 
 		// 위의 두단계에서 err가 nil일 경우 DB에 유저를 생성
 		if err := db.Create(&user); err.Error != nil {

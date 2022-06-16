@@ -31,7 +31,7 @@ func signIn() echo.HandlerFunc {
 			return echo.ErrBadRequest
 		}
 
-		res := helper.CheckPasswordHash(user.Password, inputpw)
+		res := helper.CheckPasswordHash(*user.Password, *inputpw)
 
 		// 비밀번호 검증에 실패한 경우
 		if !res {
@@ -43,16 +43,14 @@ func signIn() echo.HandlerFunc {
 			return echo.ErrInternalServerError
 		}
 
-		cookie := new(http.Cookie)
-		cookie.Name = "access-token"
-		cookie.Value = accessToken
-		cookie.HttpOnly = true
-		cookie.Expires = time.Now().Add(time.Hour * 24)
-
-		c.SetCookie(cookie)
+		expiredAt := time.Now().AddDate(0, 3, 0)
+		user.AccessToken = &accessToken
+		user.ExpiredAt = &expiredAt
+		db.Save(&user)
 
 		if err := c.JSON(http.StatusOK, map[string]string{
-			"message": "Login Success",
+			"message":      "Login Success",
+			"access_token": accessToken,
 		}); err != nil {
 			return errors.Wrap(err, "signIn")
 		}
