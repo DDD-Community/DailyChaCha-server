@@ -14,14 +14,24 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+type Token struct {
+	Token string `json:"token" `
+}
+
 func appleSignIn() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		token := c.FormValue("token")
+		token := new(Token)
+		if err := c.Bind(token); err != nil {
+			return c.JSON(http.StatusBadRequest, map[string]string{
+				"message": "bad request",
+			})
+		}
+
 		teamID := os.Getenv("APPLE_TEAM_ID")
 		clientID := os.Getenv("APPLE_CLIENT_ID")
 		keyID := os.Getenv("APPLE_KEY_ID")
-		fmt.Println("token", token)
-		appleUser, err := helper.ValidateAuthorizationToken(token, os.Getenv("SECRET_KEY"), clientID, teamID, keyID)
+		fmt.Println("token", token.Token)
+		appleUser, err := helper.ValidateAuthorizationToken(token.Token, os.Getenv("SECRET_KEY"), clientID, teamID, keyID)
 		if err != nil {
 			return errors.Wrap(err, "helper.ValidateAuthorizationToken")
 		}
