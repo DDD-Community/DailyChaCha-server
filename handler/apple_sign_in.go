@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"time"
@@ -19,7 +20,7 @@ func appleSignIn() echo.HandlerFunc {
 		teamID := os.Getenv("APPLE_TEAM_ID")
 		clientID := os.Getenv("APPLE_CLIENT_ID")
 		keyID := os.Getenv("APPLE_KEY_ID")
-
+		fmt.Println("token", token)
 		appleUser, err := helper.ValidateAuthorizationToken(token, os.Getenv("SECRET_KEY"), clientID, teamID, keyID)
 		if err != nil {
 			return errors.Wrap(err, "helper.ValidateAuthorizationToken")
