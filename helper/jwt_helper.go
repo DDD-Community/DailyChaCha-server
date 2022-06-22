@@ -1,6 +1,7 @@
 package helper
 
 import (
+	"fmt"
 	"os"
 	"strings"
 	"time"
@@ -30,12 +31,15 @@ func CreateJWT(Email string) (string, error) {
 func ValidateJWT(c echo.Context) (*models.User, error) {
 	header := c.Request().Header
 	authv := header.Get("Authorization")
-
+	fmt.Println(authv)
+	if authv == "" {
+		return nil, errors.New("no authorization")
+	}
 	// Get bearer token
 	if !strings.HasPrefix(strings.ToLower(authv), "bearer") {
 		return nil, errors.New("invalid bearer token")
 	}
-
+	fmt.Println("2")
 	values := strings.Split(authv, " ")
 	if len(values) < 2 {
 		return nil, errors.New("no bearer token")
