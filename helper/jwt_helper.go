@@ -22,3 +22,7 @@ func CreateJWT(Email string) (string, error) {
 	}
 	return tk, nil
 }
+
+func ValidateJWT() (bool, error) {
+	return false, nil
+}
