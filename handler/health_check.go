@@ -14,7 +14,7 @@ func healthCheck() echo.HandlerFunc {
 
 		user, err := helper.ValidateJWT(c)
 		if err != nil {
-			return nil
+			return err
 		}
 
 		// Mock Data를 생성한다.
