@@ -8,26 +8,31 @@ import (
 	"github.com/pkg/errors"
 )
 
+type user struct {
+	email string
+}
+
 // @Summary Get test list
-// @Description Get user's info
+// @Description Get auth test api
 // @Accept json
 // @Produce json
-// @Param name path string true "name of the user"
-// @Success 200 {object} User
-// @Router /user/{name} [get]
+// @Security ApiKeyAuth
+// @name get-my-email
+// @param Authorization header string true "Authorization"
+// @Success 200 {object} user
+// @Failure 401
+// @Router /api/getlist [get]
 func healthCheck() echo.HandlerFunc {
 	return func(c echo.Context) error {
 
-		user, err := helper.ValidateJWT(c)
+		chaUser, err := helper.ValidateJWT(c)
 		if err != nil {
 			return err
 		}
 
-		// Mock Data를 생성한다.
-		list := map[string]string{
-			"로그인한 유저": user.Email,
-		}
-		if err := c.JSON(http.StatusOK, list); err != nil {
+		if err := c.JSON(http.StatusOK, user{
+			email: chaUser.Email,
+		}); err != nil {
 			return errors.Wrap(err, "healthCheck")
 		}
 		return nil

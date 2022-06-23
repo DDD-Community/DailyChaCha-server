@@ -1,0 +1,34 @@
+basePath: /api/v1
+definitions:
+  handler.user:
+    type: object
+host: https://ec2-54-180-8-184.ap-northeast-2.compute.amazonaws.com
+info:
+  contact: {}
+  title: DailyChaCha Sample Swagger API
+  version: "1.0"
+paths:
+  /api/getlist:
+    get:
+      consumes:
+      - application/json
+      description: Get auth test api
+      parameters:
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.user'
+        "401":
+          description: ""
+      security:
+      - ApiKeyAuth: []
+      summary: Get test list
+swagger: "2.0"
