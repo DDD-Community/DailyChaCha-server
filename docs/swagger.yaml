@@ -10,6 +10,13 @@ definitions:
       message:
         type: string
     type: object
+  handler.signUpUser:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
   models.Auth:
     properties:
       access_token:
@@ -115,18 +122,12 @@ paths:
       - application/json
       description: email, password를 받아 access token을 반환합니다.
       parameters:
-      - description: 사용자 이메일
+      - description: 유저 정보
         in: body
-        name: email
+        name: request
         required: true
         schema:
-          type: string
-      - description: 비밀번호
-        in: body
-        name: password
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/handler.signUpUser'
       produces:
       - application/json
       responses:
@@ -153,18 +154,12 @@ paths:
       - application/json
       description: email, password를 받아 가입합니다.
       parameters:
-      - description: 사용자 이메일
+      - description: 유저 정보
         in: body
-        name: email
+        name: request
         required: true
         schema:
-          type: string
-      - description: 비밀번호
-        in: body
-        name: password
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/handler.signUpUser'
       produces:
       - application/json
       responses:

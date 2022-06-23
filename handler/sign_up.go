@@ -5,7 +5,6 @@ import (
 
 	"github.com/DDD-Community/DailyChaCha-server/db"
 	"github.com/DDD-Community/DailyChaCha-server/helper"
-	"github.com/DDD-Community/DailyChaCha-server/models"
 	"github.com/pkg/errors"
 
 	"github.com/labstack/echo/v4"
@@ -15,8 +14,7 @@ import (
 // @Description email, password를 받아 가입합니다.
 // @Accept json
 // @Produce json
-// @Param email body string true "사용자 이메일"
-// @Param password body string true "비밀번호"
+// @Param request body signUpUser true "유저 정보"
 // @Success 200 {object} message
 // @Failure 401 {object} message
 // @Failure 400 {object} message
@@ -24,7 +22,7 @@ import (
 // @Router /sign-up [post]
 func signUp() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		user := new(models.User)
+		user := new(signUpUser)
 
 		if err := c.Bind(user); err != nil {
 			return c.JSON(http.StatusBadRequest, message{

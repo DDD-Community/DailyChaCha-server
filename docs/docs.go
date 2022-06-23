@@ -163,21 +163,12 @@ const docTemplate = `{
                 "summary": "로그인 API",
                 "parameters": [
                     {
-                        "description": "사용자 이메일",
-                        "name": "email",
+                        "description": "유저 정보",
+                        "name": "request",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "비밀번호",
-                        "name": "password",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/handler.signUpUser"
                         }
                     }
                 ],
@@ -221,21 +212,12 @@ const docTemplate = `{
                 "summary": "회원가입 API",
                 "parameters": [
                     {
-                        "description": "사용자 이메일",
-                        "name": "email",
+                        "description": "유저 정보",
+                        "name": "request",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "비밀번호",
-                        "name": "password",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/handler.signUpUser"
                         }
                     }
                 ],
@@ -281,6 +263,17 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.signUpUser": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
                     "type": "string"
                 }
             }
