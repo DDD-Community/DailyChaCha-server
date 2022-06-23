@@ -23,7 +23,64 @@ info:
   title: DailyChaCha Sample Swagger API
   version: "1.0"
 paths:
+  /apple-sign-in:
+    post:
+      consumes:
+      - application/json
+      description: Token을 받아 access token을 반환합니다.
+      parameters:
+      - description: 애플로그인 token
+        in: body
+        name: token
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Auth'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.message'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.message'
+      summary: 애플 로그인 API
   /getlist:
+    get:
+      consumes:
+      - application/json
+      description: access token을 확인하여 해당 토큰 유저의 이메일을 반환합니다.
+      parameters:
+      - description: bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.email'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.message'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handler.message'
+      security:
+      - ApiKeyAuth: []
+      summary: auth 토큰으로 테스트해볼 API입니다.
+  /onboarding/goals:
     get:
       consumes:
       - application/json
@@ -58,13 +115,13 @@ paths:
       - application/json
       description: email, password를 받아 access token을 반환합니다.
       parameters:
-      - description: The input todo struct
+      - description: 사용자 이메일
         in: body
         name: email
         required: true
         schema:
           type: string
-      - description: The input todo struct
+      - description: 비밀번호
         in: body
         name: password
         required: true
@@ -90,4 +147,42 @@ paths:
           schema:
             $ref: '#/definitions/handler.message'
       summary: 로그인 API
+  /sign-up:
+    post:
+      consumes:
+      - application/json
+      description: email, password를 받아 가입합니다.
+      parameters:
+      - description: 사용자 이메일
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      - description: 비밀번호
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.message'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handler.message'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.message'
+      summary: 회원가입 API
 swagger: "2.0"

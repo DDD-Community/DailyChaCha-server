@@ -8,7 +8,16 @@ import (
 	"github.com/pkg/errors"
 )
 
-// 테스트용 API
+// @Summary auth 토큰으로 테스트해볼 API입니다.
+// @Description access token을 확인하여 해당 토큰 유저의 이메일을 반환합니다.
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @param Authorization header string true "bearer {token}"
+// @Success 200 {object} email
+// @Failure 401 {object} message
+// @Failure 400 {object} message
+// @Router /onboarding/goals [get]
 func listGoals() echo.HandlerFunc {
 	return func(c echo.Context) error {
 

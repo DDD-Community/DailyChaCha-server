@@ -16,8 +16,8 @@ import (
 // @Description email, password를 받아 access token을 반환합니다.
 // @Accept json
 // @Produce json
-// @Param email body string true
-// @Param password body string true
+// @Param email body string true "사용자 이메일"
+// @Param password body string true "비밀번호"
 // @Success 200 {object} models.Auth
 // @Failure 401 {object} message
 // @Failure 400 {object} message
