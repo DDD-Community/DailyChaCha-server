@@ -16,8 +16,8 @@ import (
 // @Description email, password를 받아 access token을 반환합니다.
 // @Accept json
 // @Produce json
-// @Security ApiKeyAuth
-// @Param data body models.User true "The input todo struct"
+// @Param email body string true
+// @Param password body string true
 // @Success 200 {object} models.Auth
 // @Failure 401 {object} message
 // @Failure 400 {object} message

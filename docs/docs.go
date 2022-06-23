@@ -64,11 +64,6 @@ const docTemplate = `{
         },
         "/sign-in": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "email, password를 받아 access token을 반환합니다.",
                 "consumes": [
                     "application/json"
@@ -80,11 +75,20 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "description": "The input todo struct",
-                        "name": "data",
+                        "name": "email",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "The input todo struct",
+                        "name": "password",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 ],
@@ -141,26 +145,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "expired_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.User": {
-            "type": "object",
-            "properties": {
-                "accessToken": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "expiredAt": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "password": {
                     "type": "string"
                 }
             }

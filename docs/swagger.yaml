@@ -17,19 +17,6 @@ definitions:
       expired_at:
         type: string
     type: object
-  models.User:
-    properties:
-      accessToken:
-        type: string
-      email:
-        type: string
-      expiredAt:
-        type: string
-      id:
-        type: integer
-      password:
-        type: string
-    type: object
 host: ec2-13-209-98-22.ap-northeast-2.compute.amazonaws.com
 info:
   contact: {}
@@ -73,10 +60,16 @@ paths:
       parameters:
       - description: The input todo struct
         in: body
-        name: data
+        name: email
         required: true
         schema:
-          $ref: '#/definitions/models.User'
+          type: string
+      - description: The input todo struct
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
       produces:
       - application/json
       responses:
@@ -96,7 +89,5 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/handler.message'
-      security:
-      - ApiKeyAuth: []
       summary: 로그인 API
 swagger: "2.0"
