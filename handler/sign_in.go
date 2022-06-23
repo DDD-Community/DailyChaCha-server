@@ -12,6 +12,17 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// @Summary 로그인 API
+// @Description email, password를 받아 access token을 반환합니다.
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Param data body models.User true "The input todo struct"
+// @Success 200 {object} models.Auth
+// @Failure 401 {object} message
+// @Failure 400 {object} message
+// @Failure 500 {object} message
+// @Router /sign-in [post]
 func signIn() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		user := new(models.User)
@@ -46,9 +57,9 @@ func signIn() echo.HandlerFunc {
 		user.ExpiredAt = &expiredAt
 		db.Save(&user)
 
-		if err := c.JSON(http.StatusOK, map[string]string{
-			"message":      "Login Success",
-			"access_token": accessToken,
+		if err := c.JSON(http.StatusOK, models.Auth{
+			AccessToken: accessToken,
+			ExpiredAt:   user.ExpiredAt.Format("2006-01-02"),
 		}); err != nil {
 			return errors.Wrap(err, "signIn")
 		}

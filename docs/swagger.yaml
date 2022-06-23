@@ -1,13 +1,33 @@
 basePath: /api
 definitions:
+  handler.email:
+    properties:
+      email:
+        type: string
+    type: object
   handler.message:
     properties:
       message:
         type: string
     type: object
-  handler.user:
+  models.Auth:
     properties:
+      access_token:
+        type: string
+      expired_at:
+        type: string
+    type: object
+  models.User:
+    properties:
+      accessToken:
+        type: string
       email:
+        type: string
+      expiredAt:
+        type: string
+      id:
+        type: integer
+      password:
         type: string
     type: object
 host: ec2-13-209-98-22.ap-northeast-2.compute.amazonaws.com
@@ -20,9 +40,9 @@ paths:
     get:
       consumes:
       - application/json
-      description: Get auth test api
+      description: access token을 확인하여 해당 토큰 유저의 이메일을 반환합니다.
       parameters:
-      - description: Authorization
+      - description: bearer {token}
         in: header
         name: Authorization
         required: true
@@ -33,7 +53,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handler.user'
+            $ref: '#/definitions/handler.email'
         "400":
           description: Bad Request
           schema:
@@ -44,5 +64,39 @@ paths:
             $ref: '#/definitions/handler.message'
       security:
       - ApiKeyAuth: []
-      summary: Get test list
+      summary: auth 토큰으로 테스트해볼 API입니다.
+  /sign-in:
+    post:
+      consumes:
+      - application/json
+      description: email, password를 받아 access token을 반환합니다.
+      parameters:
+      - description: The input todo struct
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Auth'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.message'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handler.message'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.message'
+      security:
+      - ApiKeyAuth: []
+      summary: 로그인 API
 swagger: "2.0"

@@ -15,18 +15,18 @@
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Get auth test api",
+                "description": "access token을 확인하여 해당 토큰 유저의 이메일을 반환합니다.",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Get test list",
+                "summary": "auth 토큰으로 테스트해볼 API입니다.",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Authorization",
+                        "description": "bearer {token}",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -36,7 +36,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/handler.user"
+                            "$ref": "#/definitions/handler.email"
                         }
                     },
                     "400": {
@@ -53,9 +53,71 @@
                     }
                 }
             }
+        },
+        "/sign-in": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "email, password를 받아 access token을 반환합니다.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "로그인 API",
+                "parameters": [
+                    {
+                        "description": "The input todo struct",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Auth"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.message"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/handler.message"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.message"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "handler.email": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                }
+            }
+        },
         "handler.message": {
             "type": "object",
             "properties": {
@@ -64,10 +126,33 @@
                 }
             }
         },
-        "handler.user": {
+        "models.Auth": {
             "type": "object",
             "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "expired_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.User": {
+            "type": "object",
+            "properties": {
+                "accessToken": {
+                    "type": "string"
+                },
                 "email": {
+                    "type": "string"
+                },
+                "expiredAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "password": {
                     "type": "string"
                 }
             }

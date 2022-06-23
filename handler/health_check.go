@@ -8,7 +8,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-type user struct {
+type email struct {
 	Email string `json:"email"`
 }
 
@@ -16,26 +16,24 @@ type message struct {
 	Message string `json:"message"`
 }
 
-// @Summary Get test list
-// @Description Get auth test api
+// @Summary auth 토큰으로 테스트해볼 API입니다.
+// @Description access token을 확인하여 해당 토큰 유저의 이메일을 반환합니다.
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
-// @name get-my-email
-// @param Authorization header string true "Authorization"
-// @Success 200 {object} user
+// @param Authorization header string true "bearer {token}"
+// @Success 200 {object} email
 // @Failure 401 {object} message
 // @Failure 400 {object} message
 // @Router /getlist [get]
 func healthCheck() echo.HandlerFunc {
 	return func(c echo.Context) error {
-
 		chaUser, err := helper.ValidateJWT(c)
 		if err != nil {
 			return err
 		}
 
-		if err := c.JSON(http.StatusOK, user{
+		if err := c.JSON(http.StatusOK, email{
 			Email: chaUser.Email,
 		}); err != nil {
 			return errors.Wrap(err, "healthCheck")
