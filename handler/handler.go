@@ -2,6 +2,8 @@ package handler
 
 import (
 	"github.com/labstack/echo/v4"
+
+	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
 func ApplyHandler(e *echo.Echo) {
@@ -17,6 +19,8 @@ func ApplyHandler(e *echo.Echo) {
 	// 목데이터로 테스트
 	e.GET("/api/getlist", healthCheck())
 
-	// 목데이터로 테스트
+	// 결심하기 리스트
 	e.GET("/api/onboarding/goals", listGoals())
+
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
 }

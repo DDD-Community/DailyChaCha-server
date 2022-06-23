@@ -8,7 +8,13 @@ import (
 	"github.com/pkg/errors"
 )
 
-// 테스트용 API
+// @Summary Get test list
+// @Description Get user's info
+// @Accept json
+// @Produce json
+// @Param name path string true "name of the user"
+// @Success 200 {object} User
+// @Router /user/{name} [get]
 func healthCheck() echo.HandlerFunc {
 	return func(c echo.Context) error {
 
