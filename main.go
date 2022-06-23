@@ -11,7 +11,7 @@ import (
 
 // @title DailyChaCha Sample Swagger API
 // @version 1.0
-// @host ec2-13-209-98-22.ap-northeast-2.compute.amazonaws.com/
+// @host ec2-13-209-98-22.ap-northeast-2.compute.amazonaws.com
 // @BasePath /api
 func main() {
 

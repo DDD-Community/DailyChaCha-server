@@ -50,13 +50,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/handler.message"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/handler.message"
                         }
                     }
                 }
@@ -64,6 +64,14 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "handler.message": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
         "handler.user": {
             "type": "object",
             "properties": {
@@ -78,7 +86,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "ec2-13-209-98-22.ap-northeast-2.compute.amazonaws.com/",
+	Host:             "ec2-13-209-98-22.ap-northeast-2.compute.amazonaws.com",
 	BasePath:         "/api",
 	Schemes:          []string{},
 	Title:            "DailyChaCha Sample Swagger API",

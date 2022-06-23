@@ -1,11 +1,16 @@
 basePath: /api
 definitions:
+  handler.message:
+    properties:
+      message:
+        type: string
+    type: object
   handler.user:
     properties:
       email:
         type: string
     type: object
-host: ec2-13-209-98-22.ap-northeast-2.compute.amazonaws.com/
+host: ec2-13-209-98-22.ap-northeast-2.compute.amazonaws.com
 info:
   contact: {}
   title: DailyChaCha Sample Swagger API
@@ -32,11 +37,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            type: string
+            $ref: '#/definitions/handler.message'
         "401":
           description: Unauthorized
           schema:
-            type: string
+            $ref: '#/definitions/handler.message'
       security:
       - ApiKeyAuth: []
       summary: Get test list
