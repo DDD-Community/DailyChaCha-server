@@ -16,4 +16,7 @@ func ApplyHandler(e *echo.Echo) {
 
 	// 목데이터로 테스트
 	e.GET("/api/getlist", healthCheck())
+
+	// 목데이터로 테스트
+	e.GET("/api/onboarding/goals", listGoals())
 }
