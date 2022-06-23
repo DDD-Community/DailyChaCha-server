@@ -5,6 +5,13 @@ definitions:
       email:
         type: string
     type: object
+  handler.goal:
+    properties:
+      email:
+        items:
+          type: string
+        type: array
+    type: object
   handler.message:
     properties:
       message:
@@ -91,7 +98,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: access token을 확인하여 해당 토큰 유저의 이메일을 반환합니다.
+      description: 결심하기에서 사용할 목록들을 반환합니다.
       parameters:
       - description: bearer {token}
         in: header
@@ -104,7 +111,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handler.email'
+            $ref: '#/definitions/handler.goal'
         "400":
           description: Bad Request
           schema:
@@ -115,7 +122,7 @@ paths:
             $ref: '#/definitions/handler.message'
       security:
       - ApiKeyAuth: []
-      summary: auth 토큰으로 테스트해볼 API입니다.
+      summary: 결심하기 목록 API
   /sign-in:
     post:
       consumes:

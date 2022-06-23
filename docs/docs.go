@@ -112,14 +112,14 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "access token을 확인하여 해당 토큰 유저의 이메일을 반환합니다.",
+                "description": "결심하기에서 사용할 목록들을 반환합니다.",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "auth 토큰으로 테스트해볼 API입니다.",
+                "summary": "결심하기 목록 API",
                 "parameters": [
                     {
                         "type": "string",
@@ -133,7 +133,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/handler.email"
+                            "$ref": "#/definitions/handler.goal"
                         }
                     },
                     "400": {
@@ -256,6 +256,17 @@ const docTemplate = `{
             "properties": {
                 "email": {
                     "type": "string"
+                }
+            }
+        },
+        "handler.goal": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },

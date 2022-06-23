@@ -5,6 +5,7 @@ import (
 
 	"github.com/DDD-Community/DailyChaCha-server/db"
 	"github.com/DDD-Community/DailyChaCha-server/helper"
+	"github.com/DDD-Community/DailyChaCha-server/models"
 	"github.com/pkg/errors"
 
 	"github.com/labstack/echo/v4"
@@ -49,9 +50,12 @@ func signUp() echo.HandlerFunc {
 		user.Password = &hashpw
 
 		// 위의 두단계에서 err가 nil일 경우 DB에 유저를 생성
-		if err := db.Create(&user); err.Error != nil {
+		if err := db.Create(&models.User{
+			Email:    user.Email,
+			Password: user.Password,
+		}); err.Error != nil {
 			return c.JSON(http.StatusInternalServerError, message{
-				"Failed SignUp",
+				err.Error.Error(),
 			})
 		}
 
