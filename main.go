@@ -5,6 +5,8 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/sirupsen/logrus"
+
+	_ "github.com/DDD-Community/DailyChaCha-server/docs"
 )
 
 // @title DailyChaCha Sample Swagger API
