@@ -5,14 +5,11 @@ import (
 
 	"github.com/DDD-Community/DailyChaCha-server/helper"
 	"github.com/labstack/echo/v4"
+	"github.com/pkg/errors"
 )
 
 type user struct {
 	Email string `json:"email"`
-}
-
-type message struct {
-	Message string `json:"message"`
 }
 
 // @Summary Get test list
@@ -23,8 +20,8 @@ type message struct {
 // @name get-my-email
 // @param Authorization header string true "Authorization"
 // @Success 200 {object} user
-// @Failure 401 {object} message
-// @Failure 400 {object} message
+// @Failure 401 {string} error msg
+// @Failure 400 {string} error msg
 // @Router /getlist [get]
 func healthCheck() echo.HandlerFunc {
 	return func(c echo.Context) error {
@@ -37,8 +34,7 @@ func healthCheck() echo.HandlerFunc {
 		if err := c.JSON(http.StatusOK, user{
 			Email: chaUser.Email,
 		}); err != nil {
-			c.JSON(http.StatusInternalServerError, message{"internal server error"})
-			return nil
+			return errors.Wrap(err, "healthCheck")
 		}
 		return nil
 	}
