@@ -22,7 +22,7 @@ type Token struct {
 // @Description Token을 받아 access token을 반환합니다.
 // @Accept json
 // @Produce json
-// @Param token body string true "애플로그인 token"
+// @Param token body Token true "애플로그인 token"
 // @Success 200 {object} models.Auth
 // @Failure 400 {object} message
 // @Failure 500 {object} message

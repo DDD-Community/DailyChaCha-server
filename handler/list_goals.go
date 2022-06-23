@@ -9,7 +9,7 @@ import (
 )
 
 type goal struct {
-	Goals []string `json:"email"`
+	Goals []string `json:"goals"`
 }
 
 // @Summary 결심하기 목록 API

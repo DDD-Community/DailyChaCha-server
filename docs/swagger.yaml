@@ -1,5 +1,10 @@
 basePath: /api
 definitions:
+  handler.Token:
+    properties:
+      token:
+        type: string
+    type: object
   handler.email:
     properties:
       email:
@@ -7,7 +12,7 @@ definitions:
     type: object
   handler.goal:
     properties:
-      email:
+      goals:
         items:
           type: string
         type: array
@@ -48,7 +53,7 @@ paths:
         name: token
         required: true
         schema:
-          type: string
+          $ref: '#/definitions/handler.Token'
       produces:
       - application/json
       responses:

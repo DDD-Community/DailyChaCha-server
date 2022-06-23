@@ -33,7 +33,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/handler.Token"
                         }
                     }
                 ],
@@ -251,6 +251,14 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "handler.Token": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
         "handler.email": {
             "type": "object",
             "properties": {
@@ -262,7 +270,7 @@ const docTemplate = `{
         "handler.goal": {
             "type": "object",
             "properties": {
-                "email": {
+                "goals": {
                     "type": "array",
                     "items": {
                         "type": "string"
