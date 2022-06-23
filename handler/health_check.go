@@ -9,7 +9,11 @@ import (
 )
 
 type user struct {
-	email string
+	Email string `json:"email"`
+}
+
+type message struct {
+	Message string `json:"message"`
 }
 
 // @Summary Get test list
@@ -20,7 +24,8 @@ type user struct {
 // @name get-my-email
 // @param Authorization header string true "Authorization"
 // @Success 200 {object} user
-// @Failure 401
+// @Failure 401 {object} message
+// @Failure 400 {object} message
 // @Router /api/getlist [get]
 func healthCheck() echo.HandlerFunc {
 	return func(c echo.Context) error {
@@ -31,7 +36,7 @@ func healthCheck() echo.HandlerFunc {
 		}
 
 		if err := c.JSON(http.StatusOK, user{
-			email: chaUser.Email,
+			Email: chaUser.Email,
 		}); err != nil {
 			return errors.Wrap(err, "healthCheck")
 		}
