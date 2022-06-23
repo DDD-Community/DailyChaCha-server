@@ -11,8 +11,8 @@ import (
 
 // @title DailyChaCha Sample Swagger API
 // @version 1.0
-// @host https://ec2-54-180-8-184.ap-northeast-2.compute.amazonaws.com
-// @BasePath /api/v1
+// @host ec2-13-209-98-22.ap-northeast-2.compute.amazonaws.com/
+// @BasePath /api
 func main() {
 
 	// godotenv는 로컬 개발환경에서 .env를 통해 환경변수를 읽어올 때 쓰는 모듈이다.

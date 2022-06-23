@@ -26,7 +26,7 @@ type message struct {
 // @Success 200 {object} user
 // @Failure 401 {object} message
 // @Failure 400 {object} message
-// @Router /api/getlist [get]
+// @Router /getlist [get]
 func healthCheck() echo.HandlerFunc {
 	return func(c echo.Context) error {
 
