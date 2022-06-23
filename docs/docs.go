@@ -50,13 +50,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handler.message"
+                            "type": "string"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/handler.message"
+                            "type": "string"
                         }
                     }
                 }
@@ -64,14 +64,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "handler.message": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
         "handler.user": {
             "type": "object",
             "properties": {

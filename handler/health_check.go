@@ -12,10 +12,6 @@ type user struct {
 	Email string `json:"email"`
 }
 
-type message struct {
-	Message string `json:"message"`
-}
-
 // @Summary Get test list
 // @Description Get auth test api
 // @Accept json
@@ -24,8 +20,8 @@ type message struct {
 // @name get-my-email
 // @param Authorization header string true "Authorization"
 // @Success 200 {object} user
-// @Failure 401 {object} message
-// @Failure 400 {object} message
+// @Failure 401 {string} message
+// @Failure 400 {string} message
 // @Router /getlist [get]
 func healthCheck() echo.HandlerFunc {
 	return func(c echo.Context) error {
