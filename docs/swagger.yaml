@@ -1,5 +1,10 @@
 basePath: /api
 definitions:
+  handler.message:
+    properties:
+      message:
+        type: string
+    type: object
   handler.user:
     properties:
       email:
@@ -32,11 +37,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            type: string
+            $ref: '#/definitions/handler.message'
         "401":
           description: Unauthorized
           schema:
-            type: string
+            $ref: '#/definitions/handler.message'
       security:
       - ApiKeyAuth: []
       summary: Get test list

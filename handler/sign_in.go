@@ -17,9 +17,7 @@ func signIn() echo.HandlerFunc {
 		user := new(models.User)
 
 		if err := c.Bind(user); err != nil {
-			return c.JSON(http.StatusBadRequest, map[string]string{
-				"message": "bad request",
-			})
+			return c.JSON(http.StatusBadRequest, message{"bad request"})
 		}
 		inputpw := user.Password
 
