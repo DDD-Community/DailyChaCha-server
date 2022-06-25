@@ -51,8 +51,9 @@ func signUp() echo.HandlerFunc {
 
 		// 위의 두단계에서 err가 nil일 경우 DB에 유저를 생성
 		if err := db.Create(&models.User{
-			Email:    user.Email,
-			Password: user.Password,
+			Email:                 user.Email,
+			Password:              user.Password,
+			IsOnboardingCompleted: false,
 		}); err.Error != nil {
 			return c.JSON(http.StatusInternalServerError, message{
 				err.Error.Error(),

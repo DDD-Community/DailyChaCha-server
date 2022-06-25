@@ -10,17 +10,50 @@ definitions:
       email:
         type: string
     type: object
-  handler.goal:
+  handler.exerciseDate:
     properties:
-      goals:
+      exercise_date:
+        type: string
+      exercise_time:
+        type: integer
+    type: object
+  handler.exerciseDateForCreate:
+    properties:
+      exercise_dates:
         items:
           type: string
         type: array
+    type: object
+  handler.exerciseDateForList:
+    properties:
+      exercise_dates:
+        items:
+          $ref: '#/definitions/handler.exerciseDate'
+        type: array
+      goal:
+        type: string
+    type: object
+  handler.exerciseDateForUpdate:
+    properties:
+      exercise_dates:
+        items:
+          $ref: '#/definitions/handler.exerciseDate'
+        type: array
+    type: object
+  handler.goal:
+    properties:
+      goal:
+        type: string
     type: object
   handler.message:
     properties:
       message:
         type: string
+    type: object
+  handler.onboardingStatus:
+    properties:
+      is_onboarding_completed:
+        type: boolean
     type: object
   handler.signUpUser:
     properties:
@@ -99,6 +132,91 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: auth 토큰으로 테스트해볼 API입니다.
+  /onboarding/dates:
+    get:
+      consumes:
+      - application/json
+      description: 유저의 온보딩 여부를 반환합니다.
+      parameters:
+      - description: bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.exerciseDateForList'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.message'
+      security:
+      - ApiKeyAuth: []
+      summary: 온보딩 운동일정 가져오는 API
+    post:
+      consumes:
+      - application/json
+      description: 유저의 온보딩 두번째 - 날짜를 생성하는 API입니다.
+      parameters:
+      - description: bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 요일
+        in: body
+        name: Weekday
+        required: true
+        schema:
+          $ref: '#/definitions/handler.exerciseDateForCreate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.message'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.message'
+      security:
+      - ApiKeyAuth: []
+      summary: 날짜정하기 생성 API
+    put:
+      consumes:
+      - application/json
+      description: 유저의 온보딩 세번째 - 시간을 생성하는 API입니다.
+      parameters:
+      - description: bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 습관 일정
+        in: body
+        name: ExerciseDate
+        required: true
+        schema:
+          $ref: '#/definitions/handler.exerciseDateForUpdate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.message'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.message'
+      security:
+      - ApiKeyAuth: []
+      summary: 시간정하기 API
   /onboarding/goals:
     get:
       consumes:
@@ -116,7 +234,9 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handler.goal'
+            items:
+              type: string
+            type: array
         "400":
           description: Bad Request
           schema:
@@ -128,6 +248,61 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 결심하기 목록 API
+    post:
+      consumes:
+      - application/json
+      description: 유저의 온보딩 첫번째 - 결심을 생성하는 API입니다.
+      parameters:
+      - description: bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 결심
+        in: body
+        name: Goal
+        required: true
+        schema:
+          $ref: '#/definitions/handler.goal'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.message'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.message'
+      security:
+      - ApiKeyAuth: []
+      summary: 결심하기 생성 API
+  /onboarding/status:
+    get:
+      consumes:
+      - application/json
+      description: 유저의 온보딩 여부를 반환합니다.
+      parameters:
+      - description: bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.onboardingStatus'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.message'
+      security:
+      - ApiKeyAuth: []
+      summary: 온보딩 상태 API
   /sign-in:
     post:
       consumes:

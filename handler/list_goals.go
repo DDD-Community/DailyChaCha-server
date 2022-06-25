@@ -9,7 +9,7 @@ import (
 )
 
 type goal struct {
-	Goals []string `json:"goals"`
+	Goal string `json:"goal"`
 }
 
 // @Summary 결심하기 목록 API
@@ -18,7 +18,7 @@ type goal struct {
 // @Produce json
 // @Security ApiKeyAuth
 // @param Authorization header string true "bearer {token}"
-// @Success 200 {object} goal
+// @Success 200 {object} []string
 // @Failure 401 {object} message
 // @Failure 400 {object} message
 // @Router /onboarding/goals [get]
@@ -30,12 +30,10 @@ func listGoals() echo.HandlerFunc {
 			return err
 		}
 
-		goalList := goal{
-			Goals: []string{
-				"몸도 마음도 건강한 삶을 위해",
-				"루틴한 삶을 위해",
-				"멋진 몸매를 위해",
-			},
+		goalList := []string{
+			"몸도 마음도 건강한 삶을 위해",
+			"루틴한 삶을 위해",
+			"멋진 몸매를 위해",
 		}
 
 		if err := c.JSON(http.StatusOK, goalList); err != nil {
