@@ -48,7 +48,9 @@ func listExercisedates() echo.HandlerFunc {
 		}
 		for rows.Next() {
 			e := new(models.ExerciseDate)
-			rows.Scan(&e)
+			if err := rows.Scan(&e); err != nil {
+				return c.JSON(http.StatusInternalServerError, message{"Failed scan date"})
+			}
 			exerciseDates.ExerciseDates = append(exerciseDates.ExerciseDates, &exerciseDate{
 				ExerciseDate: e.ExerciseDate,
 				ExerciseTime: e.ExerciseTime,
