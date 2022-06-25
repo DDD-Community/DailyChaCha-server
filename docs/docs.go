@@ -269,7 +269,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "type": "string"
+                                "$ref": "#/definitions/handler.goal"
                             }
                         }
                     },

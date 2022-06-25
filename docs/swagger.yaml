@@ -235,7 +235,7 @@ paths:
           description: OK
           schema:
             items:
-              type: string
+              $ref: '#/definitions/handler.goal'
             type: array
         "400":
           description: Bad Request
