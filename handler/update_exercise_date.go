@@ -45,7 +45,7 @@ func updateExercisedate() echo.HandlerFunc {
 
 		for _, e := range exerciseDate.ExerciseDates {
 			date := new(models.ExerciseDate)
-			result := db.Where("exercise_date = ? AND user_id >= ?", e.ExerciseDate, chaUser.Id).Find(&date)
+			result := db.Where("exercise_date = ? AND user_id = ?", e.ExerciseDate, chaUser.Id).Find(&date)
 			// 이미 이메일이 존재할 경우의 처리
 			if result.RowsAffected != 0 {
 				date.ExerciseTime = e.ExerciseTime
