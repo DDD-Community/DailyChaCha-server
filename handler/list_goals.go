@@ -31,12 +31,10 @@ func listGoals(db *sql.DB) echo.HandlerFunc {
 			return err
 		}
 
-		goalList := map[string][]goal{
-			"goals": {
-				{"몸도 마음도 건강한 삶을 위해"},
-				{"루틴한 삶을 위해"},
-				{"멋진 몸매를 위해"},
-			},
+		goalList := []goal{
+			{"몸도 마음도 건강한 삶을 위해"},
+			{"루틴한 삶을 위해"},
+			{"멋진 몸매를 위해"},
 		}
 
 		if err := c.JSON(http.StatusOK, goalList); err != nil {

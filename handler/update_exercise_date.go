@@ -61,6 +61,19 @@ func updateExercisedate(db *sql.DB) echo.HandlerFunc {
 			}
 		}
 
+		dates, err := models.ExerciseDates(
+			models.ExerciseDateWhere.UserID.EQ(chaUser.ID),
+		).All(ctx, db)
+		if err != nil {
+			return echo.ErrInternalServerError
+		}
+
+		for _, d := range dates {
+			if !d.ExerciseTime.Valid {
+				return c.JSON(http.StatusBadRequest, message{"생성한 모든 요일에 대해 시간을 채워야 합니다."})
+			}
+		}
+
 		if err := c.JSON(http.StatusOK, message{"success"}); err != nil {
 			return errors.Wrap(err, "healthCheck")
 		}
