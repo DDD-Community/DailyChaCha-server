@@ -30,6 +30,12 @@ func getOnboardingProgress(db *sql.DB) echo.HandlerFunc {
 		if err != nil {
 			return err
 		}
+		if chaUser.IsOnboardingCompleted.Valid && chaUser.IsOnboardingCompleted.Bool {
+			return c.JSON(http.StatusOK, GetOnboardingProgressResponse{
+				Progress: "done",
+			})
+		}
+
 		progress := "goal"
 
 		g, err := models.ExerciseGoals(
