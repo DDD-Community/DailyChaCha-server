@@ -9,8 +9,9 @@ import (
 	"github.com/pkg/errors"
 )
 
-type email struct {
-	Email string `json:"email"`
+type GetUserResponse struct {
+	UserID int    `json:"user_id"`
+	Email  string `json:"email"`
 }
 
 type message struct {
@@ -23,19 +24,20 @@ type message struct {
 // @Produce json
 // @Security ApiKeyAuth
 // @param Authorization header string true "bearer {token}"
-// @Success 200 {object} email
+// @Success 200 {object} GetUserResponse
 // @Failure 401 {object} message
 // @Failure 400 {object} message
-// @Router /getlist [get]
-func healthCheck(db *sql.DB) echo.HandlerFunc {
+// @Router /user [get]
+func getUser(db *sql.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		chaUser, err := helper.ValidateJWT(c, db)
 		if err != nil {
 			return err
 		}
 
-		if err := c.JSON(http.StatusOK, email{
-			Email: chaUser.Email,
+		if err := c.JSON(http.StatusOK, GetUserResponse{
+			UserID: chaUser.ID,
+			Email:  chaUser.Email,
 		}); err != nil {
 			return errors.Wrap(err, "healthCheck")
 		}

@@ -19,7 +19,7 @@ func ApplyHandler(e *echo.Echo, db *sql.DB) {
 	e.POST("/api/apple-sign-in", appleSignIn(db))
 
 	// 목데이터로 테스트
-	e.GET("/api/getlist", healthCheck(db))
+	e.GET("/api/user", getUser(db))
 
 	// 결심하기 리스트
 	e.GET("/api/onboarding/goals", listGoals(db))
