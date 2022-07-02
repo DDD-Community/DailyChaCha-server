@@ -40,10 +40,10 @@ func ApplyHandler(e *echo.Echo, db *sql.DB) {
 	e.GET("/api/onboarding/dates", listExercisedates(db))
 
 	// 온보딩 - 알림 설정
-	e.POST("/api/onboarding/alert", getOnboardingProgress(db))
+	e.POST("/api/onboarding/alert", completeOnboardingAlert(db))
 
 	// 온보딩 - 단계 확인
-	e.GET("/api/onboarding/progress", completeOnboardingAlert(db))
+	e.GET("/api/onboarding/progress", getOnboardingProgress(db))
 
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 }

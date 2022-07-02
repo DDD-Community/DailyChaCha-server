@@ -14,8 +14,8 @@ type GetOnboardingProgressResponse struct {
 	Progress string `json:"progress"`
 }
 
-// @Summary 온보딩 상태 API
-// @Description 유저의 온보딩 여부를 반환합니다. 결심하기가 완료됐다면 'date', 날짜정하기를 완료했다면 'time', 시간정하기를 완료했다면 'alert'을 보냅니다.
+// @Summary 온보딩 진행상황 API
+// @Description 유저의 온보딩 진행상황을 반환합니다. 결심하기가 완료됐다면 'date', 날짜정하기를 완료했다면 'time', 시간정하기를 완료했다면 'alert'을 보냅니다.
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
