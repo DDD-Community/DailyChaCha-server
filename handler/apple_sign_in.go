@@ -78,7 +78,7 @@ func appleSignIn(db *sql.DB) echo.HandlerFunc {
 			}
 		}
 
-		if err := c.JSON(http.StatusOK, models.Auth{
+		if err := c.JSON(http.StatusOK, SignInResponse{
 			AccessToken: accessToken,
 			ExpiredAt:   expiredAt.Format("2006-01-02"),
 		}); err != nil {
