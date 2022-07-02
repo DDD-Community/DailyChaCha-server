@@ -41,11 +41,6 @@ func signUp(db *sql.DB) echo.HandlerFunc {
 			return echo.ErrInternalServerError
 		}
 
-		// 존재하지않는 아이디일 경우
-		if user == nil {
-			return echo.ErrBadRequest
-		}
-
 		// 이미 이메일이 존재할 경우의 처리
 		if user != nil {
 			return c.JSON(http.StatusBadRequest, message{
