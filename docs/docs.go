@@ -403,7 +403,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/handler.onboardingStatus"
+                            "$ref": "#/definitions/handler.GetOnboardingProgressResponse"
                         }
                     },
                     "500": {
@@ -571,6 +571,14 @@ const docTemplate = `{
                     "items": {
                         "type": "integer"
                     }
+                }
+            }
+        },
+        "handler.GetOnboardingProgressResponse": {
+            "type": "object",
+            "properties": {
+                "progress": {
+                    "type": "string"
                 }
             }
         },

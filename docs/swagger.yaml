@@ -12,6 +12,11 @@ definitions:
           type: integer
         type: array
     type: object
+  handler.GetOnboardingProgressResponse:
+    properties:
+      progress:
+        type: string
+    type: object
   handler.ListExercisedatesResponse:
     properties:
       exercise_dates:
@@ -321,7 +326,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handler.onboardingStatus'
+            $ref: '#/definitions/handler.GetOnboardingProgressResponse'
         "500":
           description: Internal Server Error
           schema:
