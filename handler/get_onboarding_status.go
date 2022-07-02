@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"database/sql"
 	"net/http"
 
 	"github.com/DDD-Community/DailyChaCha-server/helper"
@@ -21,14 +22,14 @@ type onboardingStatus struct {
 // @Success 200 {object} onboardingStatus
 // @Failure 500 {object} message
 // @Router /onboarding/status [get]
-func getOnboardingStatus() echo.HandlerFunc {
+func getOnboardingStatus(db *sql.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		chaUser, err := helper.ValidateJWT(c)
+		chaUser, err := helper.ValidateJWT(c, db)
 		if err != nil {
 			return err
 		}
 		if err := c.JSON(http.StatusOK, onboardingStatus{
-			IsOnboardingCompleted: chaUser.IsOnboardingCompleted,
+			IsOnboardingCompleted: chaUser.IsOnboardingCompleted.Bool,
 		}); err != nil {
 			return errors.Wrap(err, "healthCheck")
 		}

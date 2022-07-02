@@ -1,15 +1,16 @@
 package helper
 
 import (
+	"database/sql"
 	"os"
 	"strings"
 	"time"
 
-	"github.com/DDD-Community/DailyChaCha-server/db"
 	"github.com/DDD-Community/DailyChaCha-server/models"
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
+	"github.com/volatiletech/null/v8"
 )
 
 func CreateJWT(Email string) (string, error) {
@@ -27,7 +28,7 @@ func CreateJWT(Email string) (string, error) {
 	return tk, nil
 }
 
-func ValidateJWT(c echo.Context) (*models.User, error) {
+func ValidateJWT(c echo.Context, db *sql.DB) (*models.User, error) {
 	header := c.Request().Header
 	authv := header.Get("Authorization")
 
@@ -45,14 +46,17 @@ func ValidateJWT(c echo.Context) (*models.User, error) {
 	}
 
 	token := values[1]
-	user := new(models.User)
-	db := db.Connect()
-	result := db.Find(user, "access_token=?", token)
+	user, err := models.Users(
+		models.UserWhere.AccessToken.EQ(null.StringFrom(token)),
+	).One(c.Request().Context(), db)
+	if err != nil && errors.Cause(err) != sql.ErrNoRows {
+		return nil, err
+	}
 	// 존재하지않는 아이디일 경우
-	if result.RowsAffected == 0 {
+	if user == nil {
 		return nil, echo.ErrBadRequest
 	}
-	if user.ExpiredAt.Before(time.Now()) {
+	if user.ExpiredAt.Time.Before(time.Now()) {
 		return nil, echo.ErrUnauthorized
 	}
 

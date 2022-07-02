@@ -1,14 +1,14 @@
 package db
 
 import (
+	"database/sql"
 	"fmt"
 	"os"
 
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
+	"github.com/sirupsen/logrus"
 )
 
-func Connect() *gorm.DB {
+func Connect() *sql.DB {
 	USER := os.Getenv("DBUSER")
 	PASS := os.Getenv("DBPASS")
 	HOST := os.Getenv("DBHOST")
@@ -23,7 +23,10 @@ func Connect() *gorm.DB {
 		DBNAME,
 	)
 
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	db, err := sql.Open("mysql", dsn)
+	if err != nil {
+		logrus.Fatal(err)
+	}
 
 	if err != nil {
 		panic(err.Error())

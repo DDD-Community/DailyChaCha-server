@@ -234,9 +234,11 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/handler.goal'
-            type: array
+            additionalProperties:
+              items:
+                $ref: '#/definitions/handler.goal'
+              type: array
+            type: object
         "400":
           description: Bad Request
           schema:

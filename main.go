@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/DDD-Community/DailyChaCha-server/db"
 	"github.com/DDD-Community/DailyChaCha-server/handler"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
@@ -21,7 +22,9 @@ func main() {
 		logrus.Info(err)
 	}
 	e := echo.New()
-	handler.ApplyHandler(e)
+
+	db := db.Connect()
+	handler.ApplyHandler(e, db)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }

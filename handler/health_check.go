@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"database/sql"
 	"net/http"
 
 	"github.com/DDD-Community/DailyChaCha-server/helper"
@@ -26,9 +27,9 @@ type message struct {
 // @Failure 401 {object} message
 // @Failure 400 {object} message
 // @Router /getlist [get]
-func healthCheck() echo.HandlerFunc {
+func healthCheck(db *sql.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		chaUser, err := helper.ValidateJWT(c)
+		chaUser, err := helper.ValidateJWT(c, db)
 		if err != nil {
 			return err
 		}

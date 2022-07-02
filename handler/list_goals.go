@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"database/sql"
 	"net/http"
 
 	"github.com/DDD-Community/DailyChaCha-server/helper"
@@ -18,22 +19,24 @@ type goal struct {
 // @Produce json
 // @Security ApiKeyAuth
 // @param Authorization header string true "bearer {token}"
-// @Success 200 {object} []goal
+// @Success 200 {object} "goals":[]goal
 // @Failure 401 {object} message
 // @Failure 400 {object} message
 // @Router /onboarding/goals [get]
-func listGoals() echo.HandlerFunc {
+func listGoals(db *sql.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 
-		_, err := helper.ValidateJWT(c)
+		_, err := helper.ValidateJWT(c, db)
 		if err != nil {
 			return err
 		}
 
-		goalList := []goal{
-			{"몸도 마음도 건강한 삶을 위해"},
-			{"루틴한 삶을 위해"},
-			{"멋진 몸매를 위해"},
+		goalList := map[string][]goal{
+			"goals": {
+				{"몸도 마음도 건강한 삶을 위해"},
+				{"루틴한 삶을 위해"},
+				{"멋진 몸매를 위해"},
+			},
 		}
 
 		if err := c.JSON(http.StatusOK, goalList); err != nil {

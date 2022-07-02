@@ -1,18 +1,20 @@
 package handler
 
 import (
+	"database/sql"
 	"net/http"
 	"time"
 
-	"github.com/DDD-Community/DailyChaCha-server/db"
 	"github.com/DDD-Community/DailyChaCha-server/helper"
 	"github.com/DDD-Community/DailyChaCha-server/models"
 	"github.com/pkg/errors"
+	"github.com/volatiletech/null/v8"
+	"github.com/volatiletech/sqlboiler/v4/boil"
 
 	"github.com/labstack/echo/v4"
 )
 
-type signUpUser struct {
+type SignInUserRequest struct {
 	Email    string  `json:"email"`
 	Password *string `json:"password"`
 }
@@ -21,30 +23,35 @@ type signUpUser struct {
 // @Description email, password를 받아 access token을 반환합니다.
 // @Accept json
 // @Produce json
-// @Param request body signUpUser true "유저 정보"
-// @Success 200 {object} models.Auth
+// @Param request body SignInUserRequest true "유저 정보"
+// @Success 200 {object} SignInResponse
 // @Failure 401 {object} message
 // @Failure 400 {object} message
 // @Failure 500 {object} message
 // @Router /sign-in [post]
-func signIn() echo.HandlerFunc {
+func signIn(db *sql.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		user := new(models.User)
+		ctx := c.Request().Context()
+		req := new(SignInUserRequest)
 
-		if err := c.Bind(user); err != nil {
+		if err := c.Bind(req); err != nil {
 			return c.JSON(http.StatusBadRequest, message{"bad request"})
 		}
-		inputpw := user.Password
+		inputpw := req.Password
 
-		db := db.Connect()
-		result := db.Find(user, "email=?", user.Email)
+		user, err := models.Users(
+			models.UserWhere.Email.EQ(req.Email),
+		).One(ctx, db)
+		if err != nil && errors.Cause(err) != sql.ErrNoRows {
+			return echo.ErrInternalServerError
+		}
 
 		// 존재하지않는 아이디일 경우
-		if result.RowsAffected == 0 {
+		if user == nil {
 			return echo.ErrBadRequest
 		}
 
-		res := helper.CheckPasswordHash(*user.Password, *inputpw)
+		res := helper.CheckPasswordHash(user.Password.String, *inputpw)
 
 		// 비밀번호 검증에 실패한 경우
 		if !res {
@@ -55,15 +62,16 @@ func signIn() echo.HandlerFunc {
 		if err != nil {
 			return echo.ErrInternalServerError
 		}
-
 		expiredAt := time.Now().AddDate(0, 3, 0)
-		user.AccessToken = &accessToken
-		user.ExpiredAt = &expiredAt
-		db.Save(&user)
+		user.AccessToken = null.StringFrom(accessToken)
+		user.ExpiredAt = null.TimeFrom(expiredAt)
+		if _, err := user.Update(ctx, db, boil.Infer()); err != nil {
+			return c.JSON(http.StatusInternalServerError, message{"Failed insert user"})
+		}
 
-		if err := c.JSON(http.StatusOK, models.Auth{
+		if err := c.JSON(http.StatusOK, SignInResponse{
 			AccessToken: accessToken,
-			ExpiredAt:   user.ExpiredAt.Format("2006-01-02"),
+			ExpiredAt:   user.ExpiredAt.Time.Format("2006-01-02"),
 		}); err != nil {
 			return errors.Wrap(err, "signIn")
 		}

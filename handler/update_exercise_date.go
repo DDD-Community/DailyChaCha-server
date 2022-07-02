@@ -1,21 +1,23 @@
 package handler
 
 import (
+	"database/sql"
 	"net/http"
 
-	"github.com/DDD-Community/DailyChaCha-server/db"
 	"github.com/DDD-Community/DailyChaCha-server/helper"
 	"github.com/DDD-Community/DailyChaCha-server/models"
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
+	"github.com/volatiletech/null/v8"
+	"github.com/volatiletech/sqlboiler/v4/boil"
 )
 
 type exerciseDate struct {
-	ExerciseDate string `json:"exercise_date"`
-	ExerciseTime *int   `json:"exercise_time"`
+	ExerciseDate int  `json:"exercise_date"`
+	ExerciseTime *int `json:"exercise_time"`
 }
 
-type exerciseDateForUpdate struct {
+type UpdateExerciseDateRequest struct {
 	ExerciseDates []exerciseDate `json:"exercise_dates"`
 }
 
@@ -25,38 +27,39 @@ type exerciseDateForUpdate struct {
 // @Produce json
 // @Security ApiKeyAuth
 // @param Authorization header string true "bearer {token}"
-// @Param ExerciseDate body exerciseDateForUpdate true "습관 일정"
+// @Param ExerciseDate body UpdateExerciseDateRequest true "습관 일정"
 // @Success 200 {object} message
 // @Failure 500 {object} message
 // @Router /onboarding/dates [put]
-func updateExercisedate() echo.HandlerFunc {
+func updateExercisedate(db *sql.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		chaUser, err := helper.ValidateJWT(c)
+		ctx := c.Request().Context()
+		chaUser, err := helper.ValidateJWT(c, db)
 		if err != nil {
 			return err
 		}
 
-		exerciseDate := new(exerciseDateForUpdate)
+		exerciseDate := new(UpdateExerciseDateRequest)
 		if err := c.Bind(exerciseDate); err != nil {
 			return c.JSON(http.StatusBadRequest, message{"bad request"})
 		}
 
-		db := db.Connect()
-
 		for _, e := range exerciseDate.ExerciseDates {
-			date := new(models.ExerciseDate)
-			result := db.Where("exercise_date = ? AND user_id = ?", e.ExerciseDate, chaUser.Id).Find(&date)
-			// 이미 이메일이 존재할 경우의 처리
-			if result.RowsAffected != 0 {
-				date.ExerciseTime = e.ExerciseTime
-				db.Save(&date)
-			} else {
+			date, err := models.ExerciseDates(
+				models.ExerciseDateWhere.UserID.EQ(chaUser.ID),
+				models.ExerciseDateWhere.ExerciseDate.EQ(e.ExerciseDate),
+			).One(ctx, db)
+			if errors.Cause(err) == sql.ErrNoRows {
 				return c.JSON(http.StatusBadRequest, message{"invaild request"})
 			}
+			if err != nil && errors.Cause(err) != sql.ErrNoRows {
+				return echo.ErrInternalServerError
+			}
+			date.ExerciseTime = null.IntFrom(*e.ExerciseTime)
+			if _, err := date.Update(ctx, db, boil.Infer()); err != nil {
+				return c.JSON(http.StatusInternalServerError, message{"Failed insert user"})
+			}
 		}
-
-		chaUser.IsOnboardingCompleted = true
-		db.Save(&chaUser)
 
 		if err := c.JSON(http.StatusOK, message{"success"}); err != nil {
 			return errors.Wrap(err, "healthCheck")

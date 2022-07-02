@@ -1,16 +1,16 @@
 package handler
 
 import (
+	"database/sql"
 	"net/http"
 
-	"github.com/DDD-Community/DailyChaCha-server/db"
 	"github.com/DDD-Community/DailyChaCha-server/helper"
 	"github.com/DDD-Community/DailyChaCha-server/models"
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
 )
 
-type exerciseDateForList struct {
+type ListExercisedatesResponse struct {
 	Goal          *string         `json:"goal"`
 	ExerciseDates []*exerciseDate `json:"exercise_dates"`
 }
@@ -21,43 +21,47 @@ type exerciseDateForList struct {
 // @Produce json
 // @Security ApiKeyAuth
 // @param Authorization header string true "bearer {token}"
-// @Success 200 {object} exerciseDateForList
+// @Success 200 {object} ListExercisedatesResponse
 // @Failure 500 {object} message
 // @Router /onboarding/dates [get]
-func listExercisedates() echo.HandlerFunc {
+func listExercisedates(db *sql.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
-
-		chaUser, err := helper.ValidateJWT(c)
+		ctx := c.Request().Context()
+		chaUser, err := helper.ValidateJWT(c, db)
 		if err != nil {
 			return err
 		}
 
-		db := db.Connect()
+		resp := ListExercisedatesResponse{}
 
-		exerciseDates := exerciseDateForList{}
-
-		exerciseGoal := new(models.ExerciseGoal)
-		result := db.Find(&exerciseGoal, "user_id=?", chaUser.Id)
-		if result.RowsAffected != 0 {
-			exerciseDates.Goal = &exerciseGoal.ExerciseGoal
+		g, err := models.ExerciseGoals(
+			models.ExerciseGoalWhere.UserID.EQ(chaUser.ID),
+		).One(ctx, db)
+		if err != nil && errors.Cause(err) != sql.ErrNoRows {
+			return echo.ErrInternalServerError
+		}
+		if g != nil {
+			resp.Goal = &g.ExerciseGoal
 		}
 
-		rows, err := db.Table("exercise_date").Where("user_id=?", chaUser.Id).Rows()
+		dates, err := models.ExerciseDates(
+			models.ExerciseDateWhere.UserID.EQ(chaUser.ID),
+		).All(ctx, db)
 		if err != nil {
-			return err
+			return echo.ErrInternalServerError
 		}
-		for rows.Next() {
-			e := new(models.ExerciseDate)
-			if err := rows.Scan(&e); err != nil {
-				return c.JSON(http.StatusInternalServerError, message{"Failed scan date"})
+
+		for _, d := range dates {
+			date := &exerciseDate{
+				ExerciseDate: d.ExerciseDate,
 			}
-			exerciseDates.ExerciseDates = append(exerciseDates.ExerciseDates, &exerciseDate{
-				ExerciseDate: e.ExerciseDate,
-				ExerciseTime: e.ExerciseTime,
-			})
+			if d.ExerciseTime.Valid {
+				date.ExerciseTime = d.ExerciseTime.Ptr()
+			}
+			resp.ExerciseDates = append(resp.ExerciseDates, date)
 		}
 
-		if err := c.JSON(http.StatusOK, exerciseDates); err != nil {
+		if err := c.JSON(http.StatusOK, resp); err != nil {
 			return errors.Wrap(err, "healthCheck")
 		}
 		return nil

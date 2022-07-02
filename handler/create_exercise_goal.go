@@ -1,13 +1,14 @@
 package handler
 
 import (
+	"database/sql"
 	"net/http"
 
-	"github.com/DDD-Community/DailyChaCha-server/db"
 	"github.com/DDD-Community/DailyChaCha-server/helper"
 	"github.com/DDD-Community/DailyChaCha-server/models"
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
+	"github.com/volatiletech/sqlboiler/v4/boil"
 )
 
 // @Summary 결심하기 생성 API
@@ -20,9 +21,10 @@ import (
 // @Success 200 {object} message
 // @Failure 500 {object} message
 // @Router /onboarding/goals [post]
-func createExerciseGoal() echo.HandlerFunc {
+func createExerciseGoal(db *sql.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		chaUser, err := helper.ValidateJWT(c)
+		ctx := c.Request().Context()
+		chaUser, err := helper.ValidateJWT(c, db)
 		if err != nil {
 			return err
 		}
@@ -32,16 +34,23 @@ func createExerciseGoal() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, message{"bad request"})
 		}
 
-		db := db.Connect()
-		exerciseGoal := new(models.ExerciseGoal)
-		result := db.Find(&exerciseGoal, "user_id=?", chaUser.Id)
-		if result.RowsAffected != 0 {
-			return c.JSON(http.StatusBadRequest, message{"이미 결심이 생성되었습니다."})
+		g, err := models.ExerciseGoals(
+			models.ExerciseGoalWhere.UserID.EQ(chaUser.ID),
+		).One(ctx, db)
+		if err != nil && errors.Cause(err) != sql.ErrNoRows {
+			return echo.ErrInternalServerError
+		}
+		if g != nil {
+			g.ExerciseGoal = goal.Goal
+			if _, err := g.Update(ctx, db, boil.Infer()); err != nil {
+				return echo.ErrInternalServerError
+			}
+			return c.JSON(http.StatusOK, message{"success"})
 		} else {
-			if err := db.Create(&models.ExerciseGoal{
-				UserID:       chaUser.Id,
+			if err := (&models.ExerciseGoal{
+				UserID:       chaUser.ID,
 				ExerciseGoal: goal.Goal,
-			}); err.Error != nil {
+			}).Insert(ctx, db, boil.Infer()); err != nil {
 				return c.JSON(http.StatusInternalServerError, message{"Failed insert user"})
 			}
 		}
