@@ -1,9 +1,46 @@
 basePath: /api
 definitions:
-  handler.Token:
+  handler.AppleSignInRequest:
     properties:
       token:
         type: string
+    type: object
+  handler.CreateExerciseDateRequest:
+    properties:
+      exercise_dates:
+        items:
+          type: integer
+        type: array
+    type: object
+  handler.ListExercisedatesResponse:
+    properties:
+      exercise_dates:
+        items:
+          $ref: '#/definitions/handler.exerciseDate'
+        type: array
+      goal:
+        type: string
+    type: object
+  handler.SignInResponse:
+    properties:
+      access_token:
+        type: string
+      expired_at:
+        type: string
+    type: object
+  handler.SignInUserRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  handler.UpdateExerciseDateRequest:
+    properties:
+      exercise_dates:
+        items:
+          $ref: '#/definitions/handler.exerciseDate'
+        type: array
     type: object
   handler.email:
     properties:
@@ -13,32 +50,9 @@ definitions:
   handler.exerciseDate:
     properties:
       exercise_date:
-        type: string
+        type: integer
       exercise_time:
         type: integer
-    type: object
-  handler.exerciseDateForCreate:
-    properties:
-      exercise_dates:
-        items:
-          type: string
-        type: array
-    type: object
-  handler.exerciseDateForList:
-    properties:
-      exercise_dates:
-        items:
-          $ref: '#/definitions/handler.exerciseDate'
-        type: array
-      goal:
-        type: string
-    type: object
-  handler.exerciseDateForUpdate:
-    properties:
-      exercise_dates:
-        items:
-          $ref: '#/definitions/handler.exerciseDate'
-        type: array
     type: object
   handler.goal:
     properties:
@@ -54,20 +68,6 @@ definitions:
     properties:
       is_onboarding_completed:
         type: boolean
-    type: object
-  handler.signUpUser:
-    properties:
-      email:
-        type: string
-      password:
-        type: string
-    type: object
-  models.Auth:
-    properties:
-      access_token:
-        type: string
-      expired_at:
-        type: string
     type: object
 host: ec2-13-209-98-22.ap-northeast-2.compute.amazonaws.com
 info:
@@ -86,14 +86,14 @@ paths:
         name: token
         required: true
         schema:
-          $ref: '#/definitions/handler.Token'
+          $ref: '#/definitions/handler.AppleSignInRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Auth'
+            $ref: '#/definitions/handler.SignInResponse'
         "400":
           description: Bad Request
           schema:
@@ -149,7 +149,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handler.exerciseDateForList'
+            $ref: '#/definitions/handler.ListExercisedatesResponse'
         "500":
           description: Internal Server Error
           schema:
@@ -172,7 +172,7 @@ paths:
         name: Weekday
         required: true
         schema:
-          $ref: '#/definitions/handler.exerciseDateForCreate'
+          $ref: '#/definitions/handler.CreateExerciseDateRequest'
       produces:
       - application/json
       responses:
@@ -202,7 +202,7 @@ paths:
         name: ExerciseDate
         required: true
         schema:
-          $ref: '#/definitions/handler.exerciseDateForUpdate'
+          $ref: '#/definitions/handler.UpdateExerciseDateRequest'
       produces:
       - application/json
       responses:
@@ -234,11 +234,9 @@ paths:
         "200":
           description: OK
           schema:
-            additionalProperties:
-              items:
-                $ref: '#/definitions/handler.goal'
-              type: array
-            type: object
+            items:
+              $ref: '#/definitions/handler.goal'
+            type: array
         "400":
           description: Bad Request
           schema:
@@ -316,14 +314,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/handler.signUpUser'
+          $ref: '#/definitions/handler.SignInUserRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Auth'
+            $ref: '#/definitions/handler.SignInResponse'
         "400":
           description: Bad Request
           schema:
@@ -348,7 +346,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/handler.signUpUser'
+          $ref: '#/definitions/handler.SignInUserRequest'
       produces:
       - application/json
       responses:

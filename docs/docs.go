@@ -33,7 +33,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.Token"
+                            "$ref": "#/definitions/handler.AppleSignInRequest"
                         }
                     }
                 ],
@@ -41,7 +41,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Auth"
+                            "$ref": "#/definitions/handler.SignInResponse"
                         }
                     },
                     "400": {
@@ -133,7 +133,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/handler.exerciseDateForList"
+                            "$ref": "#/definitions/handler.ListExercisedatesResponse"
                         }
                     },
                     "500": {
@@ -172,7 +172,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.exerciseDateForUpdate"
+                            "$ref": "#/definitions/handler.UpdateExerciseDateRequest"
                         }
                     }
                 ],
@@ -219,7 +219,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.exerciseDateForCreate"
+                            "$ref": "#/definitions/handler.CreateExerciseDateRequest"
                         }
                     }
                 ],
@@ -267,12 +267,9 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/definitions/handler.goal"
-                                }
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/handler.goal"
                             }
                         }
                     },
@@ -395,7 +392,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.signUpUser"
+                            "$ref": "#/definitions/handler.SignInUserRequest"
                         }
                     }
                 ],
@@ -403,7 +400,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Auth"
+                            "$ref": "#/definitions/handler.SignInResponse"
                         }
                     },
                     "400": {
@@ -444,7 +441,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.signUpUser"
+                            "$ref": "#/definitions/handler.SignInUserRequest"
                         }
                     }
                 ],
@@ -478,11 +475,69 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "handler.Token": {
+        "handler.AppleSignInRequest": {
             "type": "object",
             "properties": {
                 "token": {
                     "type": "string"
+                }
+            }
+        },
+        "handler.CreateExerciseDateRequest": {
+            "type": "object",
+            "properties": {
+                "exercise_dates": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "handler.ListExercisedatesResponse": {
+            "type": "object",
+            "properties": {
+                "exercise_dates": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/handler.exerciseDate"
+                    }
+                },
+                "goal": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.SignInResponse": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "expired_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.SignInUserRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.UpdateExerciseDateRequest": {
+            "type": "object",
+            "properties": {
+                "exercise_dates": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/handler.exerciseDate"
+                    }
                 }
             }
         },
@@ -498,46 +553,10 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "exercise_date": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "exercise_time": {
                     "type": "integer"
-                }
-            }
-        },
-        "handler.exerciseDateForCreate": {
-            "type": "object",
-            "properties": {
-                "exercise_dates": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
-            }
-        },
-        "handler.exerciseDateForList": {
-            "type": "object",
-            "properties": {
-                "exercise_dates": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/handler.exerciseDate"
-                    }
-                },
-                "goal": {
-                    "type": "string"
-                }
-            }
-        },
-        "handler.exerciseDateForUpdate": {
-            "type": "object",
-            "properties": {
-                "exercise_dates": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/handler.exerciseDate"
-                    }
                 }
             }
         },
@@ -562,28 +581,6 @@ const docTemplate = `{
             "properties": {
                 "is_onboarding_completed": {
                     "type": "boolean"
-                }
-            }
-        },
-        "handler.signUpUser": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.Auth": {
-            "type": "object",
-            "properties": {
-                "access_token": {
-                    "type": "string"
-                },
-                "expired_at": {
-                    "type": "string"
                 }
             }
         }

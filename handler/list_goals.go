@@ -19,7 +19,7 @@ type goal struct {
 // @Produce json
 // @Security ApiKeyAuth
 // @param Authorization header string true "bearer {token}"
-// @Success 200 {object} "goals":[]goal
+// @Success 200 {object} []goal
 // @Failure 401 {object} message
 // @Failure 400 {object} message
 // @Router /onboarding/goals [get]
