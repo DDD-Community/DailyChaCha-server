@@ -59,52 +59,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/getlist": {
-            "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "access token을 확인하여 해당 토큰 유저의 이메일을 반환합니다.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "auth 토큰으로 테스트해볼 API입니다.",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "bearer {token}",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/handler.email"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/handler.message"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/handler.message"
-                        }
-                    }
-                }
-            }
-        },
         "/onboarding/alert": {
             "post": {
                 "security": [
@@ -552,6 +506,52 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/user": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "access token을 확인하여 해당 토큰 유저의 이메일과 user id를 반환합니다.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "유저정보를 가져오는 API입니다.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "bearer {token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.GetUserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.message"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/handler.message"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -579,6 +579,17 @@ const docTemplate = `{
             "properties": {
                 "progress": {
                     "type": "string"
+                }
+            }
+        },
+        "handler.GetUserResponse": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
                 }
             }
         },
@@ -626,14 +637,6 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/handler.exerciseDate"
                     }
-                }
-            }
-        },
-        "handler.email": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
                 }
             }
         },

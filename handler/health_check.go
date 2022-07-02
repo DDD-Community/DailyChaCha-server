@@ -18,8 +18,8 @@ type message struct {
 	Message string `json:"message"`
 }
 
-// @Summary auth 토큰으로 테스트해볼 API입니다.
-// @Description access token을 확인하여 해당 토큰 유저의 이메일을 반환합니다.
+// @Summary 유저정보를 가져오는 API입니다.
+// @Description access token을 확인하여 해당 토큰 유저의 이메일과 user id를 반환합니다.
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth

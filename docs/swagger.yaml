@@ -17,6 +17,13 @@ definitions:
       progress:
         type: string
     type: object
+  handler.GetUserResponse:
+    properties:
+      email:
+        type: string
+      user_id:
+        type: integer
+    type: object
   handler.ListExercisedatesResponse:
     properties:
       exercise_dates:
@@ -46,11 +53,6 @@ definitions:
         items:
           $ref: '#/definitions/handler.exerciseDate'
         type: array
-    type: object
-  handler.email:
-    properties:
-      email:
-        type: string
     type: object
   handler.exerciseDate:
     properties:
@@ -108,35 +110,6 @@ paths:
           schema:
             $ref: '#/definitions/handler.message'
       summary: 애플 로그인 API
-  /getlist:
-    get:
-      consumes:
-      - application/json
-      description: access token을 확인하여 해당 토큰 유저의 이메일을 반환합니다.
-      parameters:
-      - description: bearer {token}
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/handler.email'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/handler.message'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/handler.message'
-      security:
-      - ApiKeyAuth: []
-      summary: auth 토큰으로 테스트해볼 API입니다.
   /onboarding/alert:
     post:
       consumes:
@@ -423,4 +396,33 @@ paths:
           schema:
             $ref: '#/definitions/handler.message'
       summary: 회원가입 API
+  /user:
+    get:
+      consumes:
+      - application/json
+      description: access token을 확인하여 해당 토큰 유저의 이메일과 user id를 반환합니다.
+      parameters:
+      - description: bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.GetUserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.message'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handler.message'
+      security:
+      - ApiKeyAuth: []
+      summary: 유저정보를 가져오는 API입니다.
 swagger: "2.0"
