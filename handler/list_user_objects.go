@@ -11,9 +11,10 @@ import (
 )
 
 type ListUserObjectsResponse struct {
-	Objects         []*models.Object     `json:"objects"`
-	Backgrounds     []*models.Background `json:"backgrounds"`
-	HasBrokenObject bool                 `json:"has_broken_object"`
+	CharacterImageURL string               `json:"character_image_url"`
+	Objects           []*models.Object     `json:"objects"`
+	Backgrounds       []*models.Background `json:"backgrounds"`
+	HasBrokenObject   bool                 `json:"has_broken_object"`
 }
 
 // @Summary 유저의 오브젝트 목록 API
@@ -35,7 +36,8 @@ func listUserObjects(db *sql.DB) echo.HandlerFunc {
 		}
 
 		resp := ListUserObjectsResponse{
-			HasBrokenObject: false,
+			CharacterImageURL: "https://dailychacha.s3.ap-northeast-2.amazonaws.com/character.png",
+			HasBrokenObject:   false,
 		}
 
 		objects, err := models.Objects().All(ctx, db)
