@@ -604,6 +604,9 @@ const docTemplate = `{
                 },
                 "goal": {
                     "type": "string"
+                },
+                "is_all_dates_same_time": {
+                    "type": "boolean"
                 }
             }
         },

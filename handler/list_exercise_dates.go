@@ -11,8 +11,9 @@ import (
 )
 
 type ListExercisedatesResponse struct {
-	Goal          *string         `json:"goal"`
-	ExerciseDates []*exerciseDate `json:"exercise_dates"`
+	Goal               *string         `json:"goal"`
+	IsAllDatesSameTime bool            `json:"is_all_dates_same_time"`
+	ExerciseDates      []*exerciseDate `json:"exercise_dates"`
 }
 
 // @Summary 온보딩 운동일정 가져오는 API
@@ -50,16 +51,23 @@ func listExercisedates(db *sql.DB) echo.HandlerFunc {
 		if err != nil {
 			return echo.ErrInternalServerError
 		}
-
+		timeMap := map[int]interface{}{}
 		for _, d := range dates {
 			date := &exerciseDate{
 				ExerciseDate: d.ExerciseDate,
 			}
 			if d.ExerciseTime.Valid {
 				date.ExerciseTime = d.ExerciseTime.Ptr()
+				timeMap[d.ExerciseTime.Int] = nil
 			}
 			resp.ExerciseDates = append(resp.ExerciseDates, date)
 		}
+
+		isAllDatesSameTime := false
+		if len(timeMap) == 1 {
+			isAllDatesSameTime = true
+		}
+		resp.IsAllDatesSameTime = isAllDatesSameTime
 
 		if err := c.JSON(http.StatusOK, resp); err != nil {
 			return errors.Wrap(err, "healthCheck")
