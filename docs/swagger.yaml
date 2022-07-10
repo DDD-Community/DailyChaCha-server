@@ -57,6 +57,8 @@ definitions:
         items:
           $ref: '#/definitions/models.Background'
         type: array
+      character_image_url:
+        type: string
       has_broken_object:
         type: boolean
       objects:

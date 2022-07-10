@@ -782,6 +782,9 @@ const docTemplate = `{
                         "$ref": "#/definitions/models.Background"
                     }
                 },
+                "character_image_url": {
+                    "type": "string"
+                },
                 "has_broken_object": {
                     "type": "boolean"
                 },
