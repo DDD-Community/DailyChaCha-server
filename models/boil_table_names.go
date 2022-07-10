@@ -4,17 +4,19 @@
 package models
 
 var TableNames = struct {
-	Backgrounds   string
-	ExerciseDates string
-	ExerciseGoals string
-	Objects       string
-	UserObjects   string
-	Users         string
+	Backgrounds           string
+	ExerciseDates         string
+	ExerciseGoals         string
+	Objects               string
+	UserExerciseHistories string
+	UserObjects           string
+	Users                 string
 }{
-	Backgrounds:   "backgrounds",
-	ExerciseDates: "exercise_dates",
-	ExerciseGoals: "exercise_goals",
-	Objects:       "objects",
-	UserObjects:   "user_objects",
-	Users:         "users",
+	Backgrounds:           "backgrounds",
+	ExerciseDates:         "exercise_dates",
+	ExerciseGoals:         "exercise_goals",
+	Objects:               "objects",
+	UserExerciseHistories: "user_exercise_histories",
+	UserObjects:           "user_objects",
+	Users:                 "users",
 }

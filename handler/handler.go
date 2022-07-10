@@ -45,5 +45,14 @@ func ApplyHandler(e *echo.Echo, db *sql.DB) {
 	// 온보딩 - 단계 확인
 	e.GET("/api/onboarding/progress", getOnboardingProgress(db))
 
+	// 홈 - 오브젝트
+	e.GET("/api/objects", listUserObjects(db))
+
+	// 홈 - 레벨
+	e.GET("/api/level", getUserLevel(db))
+
+	// 홈 - 다음 운동정보
+	e.GET("/api/next-exercise", getUserNextExercise(db))
+
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 }

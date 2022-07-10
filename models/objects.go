@@ -24,6 +24,10 @@ import (
 // Object is an object representing the database table.
 type Object struct { // ID
 	ID int64 `boil:"id" json:"id" toml:"id" yaml:"id"`
+	// 오브젝트 유형
+	ObjectType string `boil:"object_type" json:"object_type" toml:"object_type" yaml:"object_type"`
+	// 오브젝트 이름
+	ObjectName string `boil:"object_name" json:"object_name" toml:"object_name" yaml:"object_name"`
 	// 이미지 URL
 	ImageURL string `boil:"image_url" json:"image_url" toml:"image_url" yaml:"image_url"`
 
@@ -32,29 +36,41 @@ type Object struct { // ID
 }
 
 var ObjectColumns = struct {
-	ID       string
-	ImageURL string
+	ID         string
+	ObjectType string
+	ObjectName string
+	ImageURL   string
 }{
-	ID:       "id",
-	ImageURL: "image_url",
+	ID:         "id",
+	ObjectType: "object_type",
+	ObjectName: "object_name",
+	ImageURL:   "image_url",
 }
 
 var ObjectTableColumns = struct {
-	ID       string
-	ImageURL string
+	ID         string
+	ObjectType string
+	ObjectName string
+	ImageURL   string
 }{
-	ID:       "objects.id",
-	ImageURL: "objects.image_url",
+	ID:         "objects.id",
+	ObjectType: "objects.object_type",
+	ObjectName: "objects.object_name",
+	ImageURL:   "objects.image_url",
 }
 
 // Generated where
 
 var ObjectWhere = struct {
-	ID       whereHelperint64
-	ImageURL whereHelperstring
+	ID         whereHelperint64
+	ObjectType whereHelperstring
+	ObjectName whereHelperstring
+	ImageURL   whereHelperstring
 }{
-	ID:       whereHelperint64{field: "`objects`.`id`"},
-	ImageURL: whereHelperstring{field: "`objects`.`image_url`"},
+	ID:         whereHelperint64{field: "`objects`.`id`"},
+	ObjectType: whereHelperstring{field: "`objects`.`object_type`"},
+	ObjectName: whereHelperstring{field: "`objects`.`object_name`"},
+	ImageURL:   whereHelperstring{field: "`objects`.`image_url`"},
 }
 
 // ObjectRels is where relationship names are stored.
@@ -74,8 +90,8 @@ func (*objectR) NewStruct() *objectR {
 type objectL struct{}
 
 var (
-	objectAllColumns            = []string{"id", "image_url"}
-	objectColumnsWithoutDefault = []string{"image_url"}
+	objectAllColumns            = []string{"id", "object_type", "object_name", "image_url"}
+	objectColumnsWithoutDefault = []string{"object_type", "object_name", "image_url"}
 	objectColumnsWithDefault    = []string{"id"}
 	objectPrimaryKeyColumns     = []string{"id"}
 	objectGeneratedColumns      = []string{}

@@ -17,6 +17,22 @@ definitions:
       progress:
         type: string
     type: object
+  handler.GetUserLevelResponse:
+    properties:
+      goal:
+        type: string
+      level:
+        type: integer
+    type: object
+  handler.GetUserNextExerciseResponse:
+    properties:
+      continuity_exercise_day:
+        type: integer
+      exercise_remain_time:
+        type: integer
+      object_image_url:
+        type: string
+    type: object
   handler.GetUserResponse:
     properties:
       email:
@@ -34,6 +50,19 @@ definitions:
         type: string
       is_all_dates_same_time:
         type: boolean
+    type: object
+  handler.ListUserObjectsResponse:
+    properties:
+      backgrounds:
+        items:
+          $ref: '#/definitions/models.Background'
+        type: array
+      has_broken_object:
+        type: boolean
+      objects:
+        items:
+          $ref: '#/definitions/models.Object'
+        type: array
     type: object
   handler.SignInResponse:
     properties:
@@ -78,6 +107,28 @@ definitions:
       is_onboarding_completed:
         type: boolean
     type: object
+  models.Background:
+    properties:
+      id:
+        type: integer
+      image_url:
+        description: 이미지 URL
+        type: string
+    type: object
+  models.Object:
+    properties:
+      id:
+        type: integer
+      image_url:
+        description: 이미지 URL
+        type: string
+      object_name:
+        description: 오브젝트 이름
+        type: string
+      object_type:
+        description: 오브젝트 유형
+        type: string
+    type: object
 host: ec2-13-209-98-22.ap-northeast-2.compute.amazonaws.com
 info:
   contact: {}
@@ -112,6 +163,93 @@ paths:
           schema:
             $ref: '#/definitions/handler.message'
       summary: 애플 로그인 API
+  /level:
+    get:
+      consumes:
+      - application/json
+      description: 홈에서 사용될 레벨, 목표를 반환합니다.
+      parameters:
+      - description: bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.GetUserLevelResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.message'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handler.message'
+      security:
+      - ApiKeyAuth: []
+      summary: 유저의 레벨정보를 가져오는 API
+  /next-exercise:
+    get:
+      consumes:
+      - application/json
+      description: 홈에서 사용될 다음 운동정보들을 들을 반환합니다.
+      parameters:
+      - description: bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.GetUserNextExerciseResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.message'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handler.message'
+      security:
+      - ApiKeyAuth: []
+      summary: 유저의 다음 운동정보 API
+  /objects:
+    get:
+      consumes:
+      - application/json
+      description: 홈에서 사용될 배경, 오브젝트 목록들을 반환합니다.
+      parameters:
+      - description: bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.ListUserObjectsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.message'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handler.message'
+      security:
+      - ApiKeyAuth: []
+      summary: 유저의 오브젝트 목록 API
   /onboarding/alert:
     post:
       consumes:

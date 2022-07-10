@@ -30,6 +30,8 @@ type User struct {
 	AccessToken           null.String `boil:"access_token" json:"access_token,omitempty" toml:"access_token" yaml:"access_token,omitempty"`
 	ExpiredAt             null.Time   `boil:"expired_at" json:"expired_at,omitempty" toml:"expired_at" yaml:"expired_at,omitempty"`
 	IsOnboardingCompleted null.Bool   `boil:"is_onboarding_completed" json:"is_onboarding_completed,omitempty" toml:"is_onboarding_completed" yaml:"is_onboarding_completed,omitempty"`
+	// 레벨
+	Level int64 `boil:"level" json:"level" toml:"level" yaml:"level"`
 
 	R *userR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L userL  `boil:"-" json:"-" toml:"-" yaml:"-"`
@@ -42,6 +44,7 @@ var UserColumns = struct {
 	AccessToken           string
 	ExpiredAt             string
 	IsOnboardingCompleted string
+	Level                 string
 }{
 	ID:                    "id",
 	Email:                 "email",
@@ -49,6 +52,7 @@ var UserColumns = struct {
 	AccessToken:           "access_token",
 	ExpiredAt:             "expired_at",
 	IsOnboardingCompleted: "is_onboarding_completed",
+	Level:                 "level",
 }
 
 var UserTableColumns = struct {
@@ -58,6 +62,7 @@ var UserTableColumns = struct {
 	AccessToken           string
 	ExpiredAt             string
 	IsOnboardingCompleted string
+	Level                 string
 }{
 	ID:                    "users.id",
 	Email:                 "users.email",
@@ -65,6 +70,7 @@ var UserTableColumns = struct {
 	AccessToken:           "users.access_token",
 	ExpiredAt:             "users.expired_at",
 	IsOnboardingCompleted: "users.is_onboarding_completed",
+	Level:                 "users.level",
 }
 
 // Generated where
@@ -148,6 +154,7 @@ var UserWhere = struct {
 	AccessToken           whereHelpernull_String
 	ExpiredAt             whereHelpernull_Time
 	IsOnboardingCompleted whereHelpernull_Bool
+	Level                 whereHelperint64
 }{
 	ID:                    whereHelperint{field: "`users`.`id`"},
 	Email:                 whereHelperstring{field: "`users`.`email`"},
@@ -155,6 +162,7 @@ var UserWhere = struct {
 	AccessToken:           whereHelpernull_String{field: "`users`.`access_token`"},
 	ExpiredAt:             whereHelpernull_Time{field: "`users`.`expired_at`"},
 	IsOnboardingCompleted: whereHelpernull_Bool{field: "`users`.`is_onboarding_completed`"},
+	Level:                 whereHelperint64{field: "`users`.`level`"},
 }
 
 // UserRels is where relationship names are stored.
@@ -174,9 +182,9 @@ func (*userR) NewStruct() *userR {
 type userL struct{}
 
 var (
-	userAllColumns            = []string{"id", "email", "password", "access_token", "expired_at", "is_onboarding_completed"}
+	userAllColumns            = []string{"id", "email", "password", "access_token", "expired_at", "is_onboarding_completed", "level"}
 	userColumnsWithoutDefault = []string{"email", "password", "access_token", "expired_at"}
-	userColumnsWithDefault    = []string{"id", "is_onboarding_completed"}
+	userColumnsWithDefault    = []string{"id", "is_onboarding_completed", "level"}
 	userPrimaryKeyColumns     = []string{"id"}
 	userGeneratedColumns      = []string{}
 )

@@ -59,6 +59,144 @@ const docTemplate = `{
                 }
             }
         },
+        "/level": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "홈에서 사용될 레벨, 목표를 반환합니다.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "유저의 레벨정보를 가져오는 API",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "bearer {token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.GetUserLevelResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.message"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/handler.message"
+                        }
+                    }
+                }
+            }
+        },
+        "/next-exercise": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "홈에서 사용될 다음 운동정보들을 들을 반환합니다.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "유저의 다음 운동정보 API",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "bearer {token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.GetUserNextExerciseResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.message"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/handler.message"
+                        }
+                    }
+                }
+            }
+        },
+        "/objects": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "홈에서 사용될 배경, 오브젝트 목록들을 반환합니다.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "유저의 오브젝트 목록 API",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "bearer {token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ListUserObjectsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.message"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/handler.message"
+                        }
+                    }
+                }
+            }
+        },
         "/onboarding/alert": {
             "post": {
                 "security": [
@@ -582,6 +720,31 @@ const docTemplate = `{
                 }
             }
         },
+        "handler.GetUserLevelResponse": {
+            "type": "object",
+            "properties": {
+                "goal": {
+                    "type": "string"
+                },
+                "level": {
+                    "type": "integer"
+                }
+            }
+        },
+        "handler.GetUserNextExerciseResponse": {
+            "type": "object",
+            "properties": {
+                "continuity_exercise_day": {
+                    "type": "integer"
+                },
+                "exercise_remain_time": {
+                    "type": "integer"
+                },
+                "object_image_url": {
+                    "type": "string"
+                }
+            }
+        },
         "handler.GetUserResponse": {
             "type": "object",
             "properties": {
@@ -607,6 +770,26 @@ const docTemplate = `{
                 },
                 "is_all_dates_same_time": {
                     "type": "boolean"
+                }
+            }
+        },
+        "handler.ListUserObjectsResponse": {
+            "type": "object",
+            "properties": {
+                "backgrounds": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Background"
+                    }
+                },
+                "has_broken_object": {
+                    "type": "boolean"
+                },
+                "objects": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Object"
+                    }
                 }
             }
         },
@@ -675,6 +858,38 @@ const docTemplate = `{
             "properties": {
                 "is_onboarding_completed": {
                     "type": "boolean"
+                }
+            }
+        },
+        "models.Background": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "image_url": {
+                    "description": "이미지 URL",
+                    "type": "string"
+                }
+            }
+        },
+        "models.Object": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "image_url": {
+                    "description": "이미지 URL",
+                    "type": "string"
+                },
+                "object_name": {
+                    "description": "오브젝트 이름",
+                    "type": "string"
+                },
+                "object_type": {
+                    "description": "오브젝트 유형",
+                    "type": "string"
                 }
             }
         }
