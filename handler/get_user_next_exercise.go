@@ -31,11 +31,11 @@ func getUserNextExercise(db *sql.DB) echo.HandlerFunc {
 		if err != nil {
 			return err
 		}
-
+		abs := "https://dailychacha.s3.ap-northeast-2.amazonaws.com/object03.png"
 		if err := c.JSON(http.StatusOK, GetUserNextExerciseResponse{
 			ContinuityExerciseDay: 12,
 			ExerciseRemainingTime: 36000,
-			ObjectImageURL:        nil,
+			ObjectImageURL:        &abs,
 		}); err != nil {
 			return errors.Wrap(err, "healthCheck")
 		}

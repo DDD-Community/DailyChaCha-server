@@ -36,7 +36,7 @@ func listUserObjects(db *sql.DB) echo.HandlerFunc {
 		}
 
 		resp := ListUserObjectsResponse{
-			CharacterImageURL: "https://dailychacha.s3.ap-northeast-2.amazonaws.com/character.png",
+			CharacterImageURL: "https://dailychacha.s3.ap-northeast-2.amazonaws.com/character.gif",
 			HasBrokenObject:   false,
 		}
 
