@@ -48,12 +48,23 @@ func listUserObjects(db *sql.DB) echo.HandlerFunc {
 			resp.Objects = append(resp.Objects, o)
 		}
 
-		backgrounds, err := models.Backgrounds().All(ctx, db)
-		if err != nil {
-			return echo.ErrInternalServerError
-		}
-		for _, b := range backgrounds {
-			resp.Backgrounds = append(resp.Backgrounds, b)
+		resp.Backgrounds = []*models.Background{
+			{
+				ID:       3,
+				ImageURL: "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_3.png",
+			},
+			{
+				ID:       2,
+				ImageURL: "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_2.png",
+			},
+			{
+				ID:       1,
+				ImageURL: "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_1.png",
+			},
+			{
+				ID:       2,
+				ImageURL: "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_2.png",
+			},
 		}
 
 		if err := c.JSON(http.StatusOK, resp); err != nil {
