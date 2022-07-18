@@ -50,10 +50,6 @@ func listUserObjects(db *sql.DB) echo.HandlerFunc {
 
 		resp.Backgrounds = []*models.Background{
 			{
-				ID:       3,
-				ImageURL: "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_3.png",
-			},
-			{
 				ID:       2,
 				ImageURL: "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_2.png",
 			},
@@ -64,6 +60,10 @@ func listUserObjects(db *sql.DB) echo.HandlerFunc {
 			{
 				ID:       2,
 				ImageURL: "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_2.png",
+			},
+			{
+				ID:       3,
+				ImageURL: "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_3.png",
 			},
 		}
 
