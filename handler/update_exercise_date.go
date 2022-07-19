@@ -30,7 +30,7 @@ type UpdateExerciseDateRequest struct {
 // @Param ExerciseDate body UpdateExerciseDateRequest true "습관 일정"
 // @Success 200 {object} message
 // @Failure 500 {object} message
-// @Router /onboarding/dates [put]
+// @Router /dates [put]
 func updateExercisedate(db *sql.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ctx := c.Request().Context()

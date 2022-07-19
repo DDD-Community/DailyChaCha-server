@@ -19,7 +19,7 @@ import (
 // @param Authorization header string true "bearer {token}"
 // @Success 200 {object} message
 // @Failure 500 {object} message
-// @Router /onboarding/alert [post]
+// @Router /alert [post]
 func completeOnboardingAlert(db *sql.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ctx := c.Request().Context()

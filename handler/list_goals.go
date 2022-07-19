@@ -29,7 +29,7 @@ type goal struct {
 // @Success 200 {object} []goal
 // @Failure 401 {object} message
 // @Failure 400 {object} message
-// @Router /onboarding/goals [get]
+// @Router /goals [get]
 func listGoals(db *sql.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 

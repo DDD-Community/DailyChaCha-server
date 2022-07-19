@@ -24,7 +24,7 @@ type CreateExerciseDateRequest struct {
 // @Param Weekday body CreateExerciseDateRequest true "요일"
 // @Success 200 {object} message
 // @Failure 500 {object} message
-// @Router /onboarding/dates [post]
+// @Router /dates [post]
 func createExerciseDate(db *sql.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ctx := c.Request().Context()

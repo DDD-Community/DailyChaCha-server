@@ -20,7 +20,7 @@ import (
 // @Param Goal body goal true "결심"
 // @Success 200 {object} message
 // @Failure 500 {object} message
-// @Router /onboarding/goals [post]
+// @Router /goals [post]
 func createExerciseGoal(db *sql.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ctx := c.Request().Context()

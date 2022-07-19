@@ -21,7 +21,7 @@ type onboardingStatus struct {
 // @param Authorization header string true "bearer {token}"
 // @Success 200 {object} onboardingStatus
 // @Failure 500 {object} message
-// @Router /onboarding/status [get]
+// @Router /status [get]
 func getOnboardingStatus(db *sql.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		chaUser, err := helper.ValidateJWT(c, db)

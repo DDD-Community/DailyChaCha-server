@@ -22,28 +22,28 @@ func ApplyHandler(e *echo.Echo, db *sql.DB) {
 	e.GET("/api/user", getUser(db))
 
 	// 결심하기 리스트
-	e.GET("/api/onboarding/goals", listGoals(db))
+	e.GET("/api/goals", listGoals(db))
 
 	// 온보딩 - 시간 생성
-	e.GET("/api/onboarding/status", getOnboardingStatus(db))
+	e.GET("/api/status", getOnboardingStatus(db))
 
 	// 온보딩 - 목표 생성
-	e.POST("/api/onboarding/goals", createExerciseGoal(db))
+	e.POST("/api/goals", createExerciseGoal(db))
 
 	// 온보딩 - 날짜 생성
-	e.POST("/api/onboarding/dates", createExerciseDate(db))
+	e.POST("/api/dates", createExerciseDate(db))
 
 	// 온보딩 - 시간 수정
-	e.PUT("/api/onboarding/dates", updateExercisedate(db))
+	e.PUT("/api/dates", updateExercisedate(db))
 
 	// 온보딩 - 시간 수정
-	e.GET("/api/onboarding/dates", listExercisedates(db))
+	e.GET("/api/dates", listExercisedates(db))
 
 	// 온보딩 - 알림 설정
-	e.POST("/api/onboarding/alert", completeOnboardingAlert(db))
+	e.POST("/api/alert", completeOnboardingAlert(db))
 
 	// 온보딩 - 단계 확인
-	e.GET("/api/onboarding/progress", getOnboardingProgress(db))
+	e.GET("/api/progress", getOnboardingProgress(db))
 
 	// 홈 - 오브젝트
 	e.GET("/api/objects", listUserObjects(db))

@@ -24,7 +24,7 @@ type ListExercisedatesResponse struct {
 // @param Authorization header string true "bearer {token}"
 // @Success 200 {object} ListExercisedatesResponse
 // @Failure 500 {object} message
-// @Router /onboarding/dates [get]
+// @Router /dates [get]
 func listExercisedates(db *sql.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ctx := c.Request().Context()

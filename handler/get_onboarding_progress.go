@@ -22,7 +22,7 @@ type GetOnboardingProgressResponse struct {
 // @param Authorization header string true "bearer {token}"
 // @Success 200 {object} GetOnboardingProgressResponse
 // @Failure 500 {object} message
-// @Router /onboarding/progress [get]
+// @Router /progress [get]
 func getOnboardingProgress(db *sql.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ctx := c.Request().Context()
