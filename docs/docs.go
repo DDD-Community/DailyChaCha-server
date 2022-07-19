@@ -779,7 +779,7 @@ const docTemplate = `{
                 "backgrounds": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.Background"
+                        "$ref": "#/definitions/handler.UserBackground"
                     }
                 },
                 "character_image_url": {
@@ -791,7 +791,7 @@ const docTemplate = `{
                 "objects": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.Object"
+                        "$ref": "#/definitions/handler.UserObject"
                     }
                 }
             }
@@ -826,6 +826,46 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/handler.exerciseDate"
                     }
+                }
+            }
+        },
+        "handler.UserBackground": {
+            "type": "object",
+            "properties": {
+                "display_order": {
+                    "description": "정렬 순서",
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image_url": {
+                    "description": "이미지 URL",
+                    "type": "string"
+                }
+            }
+        },
+        "handler.UserObject": {
+            "type": "object",
+            "properties": {
+                "display_order": {
+                    "description": "정렬 순서",
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image_url": {
+                    "description": "이미지 URL",
+                    "type": "string"
+                },
+                "object_name": {
+                    "description": "오브젝트 이름",
+                    "type": "string"
+                },
+                "object_type": {
+                    "description": "오브젝트 유형",
+                    "type": "string"
                 }
             }
         },
@@ -864,38 +904,6 @@ const docTemplate = `{
             "properties": {
                 "is_onboarding_completed": {
                     "type": "boolean"
-                }
-            }
-        },
-        "models.Background": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "image_url": {
-                    "description": "이미지 URL",
-                    "type": "string"
-                }
-            }
-        },
-        "models.Object": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "image_url": {
-                    "description": "이미지 URL",
-                    "type": "string"
-                },
-                "object_name": {
-                    "description": "오브젝트 이름",
-                    "type": "string"
-                },
-                "object_type": {
-                    "description": "오브젝트 유형",
-                    "type": "string"
                 }
             }
         }

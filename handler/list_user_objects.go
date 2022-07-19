@@ -10,11 +10,31 @@ import (
 	"github.com/pkg/errors"
 )
 
+type UserObject struct {
+	ID int64 `json:"id" toml:"id" yaml:"id"`
+	// 정렬 순서
+	DisplayOrder int `json:"display_order" toml:"display_order" yaml:"display_order"`
+	// 오브젝트 유형
+	ObjectType string `json:"object_type" toml:"object_type" yaml:"object_type"`
+	// 오브젝트 이름
+	ObjectName string `json:"object_name" toml:"object_name" yaml:"object_name"`
+	// 이미지 URL
+	ImageURL string `json:"image_url" toml:"image_url" yaml:"image_url"`
+}
+
+type UserBackground struct { // ID
+	ID int64 `json:"id" toml:"id" yaml:"id"`
+	// 정렬 순서
+	DisplayOrder int `json:"display_order" toml:"display_order" yaml:"display_order"`
+	// 이미지 URL
+	ImageURL string `json:"image_url" toml:"image_url" yaml:"image_url"`
+}
+
 type ListUserObjectsResponse struct {
-	CharacterImageURL string               `json:"character_image_url"`
-	Objects           []*models.Object     `json:"objects"`
-	Backgrounds       []*models.Background `json:"backgrounds"`
-	HasBrokenObject   bool                 `json:"has_broken_object"`
+	CharacterImageURL string            `json:"character_image_url"`
+	Objects           []*UserObject     `json:"objects"`
+	Backgrounds       []*UserBackground `json:"backgrounds"`
+	HasBrokenObject   bool              `json:"has_broken_object"`
 }
 
 // @Summary 유저의 오브젝트 목록 API
@@ -44,26 +64,36 @@ func listUserObjects(db *sql.DB) echo.HandlerFunc {
 		if err != nil {
 			return echo.ErrInternalServerError
 		}
-		for _, o := range objects {
-			resp.Objects = append(resp.Objects, o)
+		for i, o := range objects {
+			resp.Objects = append(resp.Objects, &UserObject{
+				ID:           o.ID,
+				ImageURL:     o.ImageURL,
+				ObjectType:   o.ObjectType,
+				ObjectName:   o.ObjectName,
+				DisplayOrder: i + 1,
+			})
 		}
 
-		resp.Backgrounds = []*models.Background{
+		resp.Backgrounds = []*UserBackground{
 			{
-				ID:       2,
-				ImageURL: "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_2.png",
+				ID:           2,
+				DisplayOrder: 1,
+				ImageURL:     "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_2.png",
 			},
 			{
-				ID:       1,
-				ImageURL: "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_1.png",
+				ID:           1,
+				DisplayOrder: 2,
+				ImageURL:     "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_1.png",
 			},
 			{
-				ID:       2,
-				ImageURL: "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_2.png",
+				ID:           2,
+				DisplayOrder: 3,
+				ImageURL:     "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_2.png",
 			},
 			{
-				ID:       3,
-				ImageURL: "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_3.png",
+				ID:           3,
+				DisplayOrder: 4,
+				ImageURL:     "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_3.png",
 			},
 		}
 
