@@ -766,7 +766,7 @@ const docTemplate = `{
                     }
                 },
                 "goal": {
-                    "type": "string"
+                    "$ref": "#/definitions/handler.goal"
                 },
                 "is_all_dates_same_time": {
                     "type": "boolean"
@@ -845,6 +845,9 @@ const docTemplate = `{
             "properties": {
                 "goal": {
                     "type": "string"
+                },
+                "index": {
+                    "type": "integer"
                 }
             }
         },

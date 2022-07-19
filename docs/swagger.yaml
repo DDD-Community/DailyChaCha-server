@@ -47,7 +47,7 @@ definitions:
           $ref: '#/definitions/handler.exerciseDate'
         type: array
       goal:
-        type: string
+        $ref: '#/definitions/handler.goal'
       is_all_dates_same_time:
         type: boolean
     type: object
@@ -98,6 +98,8 @@ definitions:
     properties:
       goal:
         type: string
+      index:
+        type: integer
     type: object
   handler.message:
     properties:
