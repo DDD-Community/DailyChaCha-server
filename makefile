@@ -7,6 +7,7 @@ run:
 lint:
 	golangci-lint run ./...
 	go mod verify
+	swag init
 
 .PHONY: generate-sql
 generate-sql:
