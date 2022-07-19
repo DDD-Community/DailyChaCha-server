@@ -9,8 +9,15 @@ import (
 	"github.com/pkg/errors"
 )
 
+var goalMap = map[string]int64{
+	"몸도 마음도 건강한 삶을 위해": 1,
+	"루틴한 삶을 위해":        2,
+	"멋진 몸매를 위해":        3,
+}
+
 type goal struct {
-	Goal string `json:"goal"`
+	Goal  string `json:"goal"`
+	Index *int64 `json:"index"`
 }
 
 // @Summary 결심하기 목록 API
@@ -32,9 +39,9 @@ func listGoals(db *sql.DB) echo.HandlerFunc {
 		}
 
 		goalList := []goal{
-			{"몸도 마음도 건강한 삶을 위해"},
-			{"루틴한 삶을 위해"},
-			{"멋진 몸매를 위해"},
+			{"몸도 마음도 건강한 삶을 위해", 1},
+			{"루틴한 삶을 위해", 2},
+			{"멋진 몸매를 위해", 3},
 		}
 
 		if err := c.JSON(http.StatusOK, goalList); err != nil {

@@ -11,7 +11,7 @@ import (
 )
 
 type ListExercisedatesResponse struct {
-	Goal               *string         `json:"goal"`
+	Goal               *goal           `json:"goal"`
 	IsAllDatesSameTime bool            `json:"is_all_dates_same_time"`
 	ExerciseDates      []*exerciseDate `json:"exercise_dates"`
 }
@@ -42,7 +42,14 @@ func listExercisedates(db *sql.DB) echo.HandlerFunc {
 			return echo.ErrInternalServerError
 		}
 		if g != nil {
-			resp.Goal = &g.ExerciseGoal
+			goal := goal{
+				Goal: g.ExerciseGoal,
+			}
+			idx, ok := goalMap[g.ExerciseGoal]
+			if ok {
+				goal.Index = &idx
+			}
+			resp.Goal = &goal
 		}
 
 		dates, err := models.ExerciseDates(
