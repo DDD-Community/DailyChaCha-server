@@ -73,6 +73,33 @@ func listUserObjects(db *sql.DB) echo.HandlerFunc {
 				DisplayOrder: i + 1,
 			})
 		}
+		for i, o := range objects {
+			resp.Objects = append(resp.Objects, &UserObject{
+				ID:           o.ID,
+				ImageURL:     o.ImageURL,
+				ObjectType:   o.ObjectType,
+				ObjectName:   o.ObjectName,
+				DisplayOrder: i + len(objects) + 1,
+			})
+		}
+		for i, o := range objects {
+			resp.Objects = append(resp.Objects, &UserObject{
+				ID:           o.ID,
+				ImageURL:     o.ImageURL,
+				ObjectType:   o.ObjectType,
+				ObjectName:   o.ObjectName,
+				DisplayOrder: i + len(objects)*2 + 1,
+			})
+		}
+		for i, o := range objects {
+			resp.Objects = append(resp.Objects, &UserObject{
+				ID:           o.ID,
+				ImageURL:     o.ImageURL,
+				ObjectType:   o.ObjectType,
+				ObjectName:   o.ObjectName,
+				DisplayOrder: i + len(objects)*3 + 1,
+			})
+		}
 
 		resp.Backgrounds = []*UserBackground{
 			{
@@ -91,8 +118,58 @@ func listUserObjects(db *sql.DB) echo.HandlerFunc {
 				ImageURL:     "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_2.png",
 			},
 			{
-				ID:           3,
+				ID:           1,
 				DisplayOrder: 4,
+				ImageURL:     "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_1.png",
+			},
+			{
+				ID:           2,
+				DisplayOrder: 5,
+				ImageURL:     "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_2.png",
+			},
+			{
+				ID:           1,
+				DisplayOrder: 6,
+				ImageURL:     "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_1.png",
+			},
+			{
+				ID:           2,
+				DisplayOrder: 7,
+				ImageURL:     "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_2.png",
+			},
+			{
+				ID:           1,
+				DisplayOrder: 8,
+				ImageURL:     "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_1.png",
+			},
+			{
+				ID:           2,
+				DisplayOrder: 9,
+				ImageURL:     "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_2.png",
+			},
+			{
+				ID:           1,
+				DisplayOrder: 10,
+				ImageURL:     "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_1.png",
+			},
+			{
+				ID:           2,
+				DisplayOrder: 11,
+				ImageURL:     "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_2.png",
+			},
+			{
+				ID:           1,
+				DisplayOrder: 12,
+				ImageURL:     "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_1.png",
+			},
+			{
+				ID:           2,
+				DisplayOrder: 13,
+				ImageURL:     "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_2.png",
+			},
+			{
+				ID:           3,
+				DisplayOrder: 14,
 				ImageURL:     "https://dailychacha.s3.ap-northeast-2.amazonaws.com/img_bg_gym_3.png",
 			},
 		}
