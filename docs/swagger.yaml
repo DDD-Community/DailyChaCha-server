@@ -5,6 +5,11 @@ definitions:
       token:
         type: string
     type: object
+  handler.CompleteTodayExerciseRequest:
+    properties:
+      code:
+        type: integer
+    type: object
   handler.CreateExerciseDateRequest:
     properties:
       exercise_dates:
@@ -16,6 +21,13 @@ definitions:
     properties:
       progress:
         type: string
+    type: object
+  handler.GetTodayExerciseResponse:
+    properties:
+      exercise:
+        $ref: '#/definitions/models.UserExerciseHistory'
+      is_exercise_completed:
+        type: boolean
     type: object
   handler.GetUserLevelResponse:
     properties:
@@ -138,6 +150,23 @@ definitions:
     properties:
       is_onboarding_completed:
         type: boolean
+    type: object
+  models.UserExerciseHistory:
+    properties:
+      exercise_date:
+        description: 운동일
+        type: string
+      exercise_ended_at:
+        description: 운동 종료 시간
+        type: string
+      exercise_started_at:
+        description: 운동 시작 시간
+        type: string
+      id:
+        type: integer
+      user_id:
+        description: 사용자 ID
+        type: integer
     type: object
 host: ec2-13-209-98-22.ap-northeast-2.compute.amazonaws.com
 info:
@@ -283,6 +312,65 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 시간정하기 API
+  /exercises/today:
+    get:
+      consumes:
+      - application/json
+      description: 유저의 운동 시점을 가져옵니다.
+      parameters:
+      - description: bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.GetTodayExerciseResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.message'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handler.message'
+      security:
+      - ApiKeyAuth: []
+      summary: 유저의 당일 운동정보를 가져오는 API
+    post:
+      consumes:
+      - application/json
+      description: 유저의 운동의 시작과 종료 시간을 기록하는 API
+      parameters:
+      - description: bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 요청
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/handler.CompleteTodayExerciseRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.message'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.message'
+      security:
+      - ApiKeyAuth: []
+      summary: 당일 운동시작, 종료 API
   /goals:
     get:
       consumes:

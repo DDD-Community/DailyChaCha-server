@@ -233,6 +233,99 @@ const docTemplate = `{
                 }
             }
         },
+        "/exercises/today": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "유저의 운동 시점을 가져옵니다.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "유저의 당일 운동정보를 가져오는 API",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "bearer {token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.GetTodayExerciseResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.message"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/handler.message"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "유저의 운동의 시작과 종료 시간을 기록하는 API",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "당일 운동시작, 종료 API",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "bearer {token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "요청",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.CompleteTodayExerciseRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.message"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.message"
+                        }
+                    }
+                }
+            }
+        },
         "/goals": {
             "get": {
                 "security": [
@@ -701,6 +794,14 @@ const docTemplate = `{
                 }
             }
         },
+        "handler.CompleteTodayExerciseRequest": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                }
+            }
+        },
         "handler.CreateExerciseDateRequest": {
             "type": "object",
             "properties": {
@@ -717,6 +818,17 @@ const docTemplate = `{
             "properties": {
                 "progress": {
                     "type": "string"
+                }
+            }
+        },
+        "handler.GetTodayExerciseResponse": {
+            "type": "object",
+            "properties": {
+                "exercise": {
+                    "$ref": "#/definitions/models.UserExerciseHistory"
+                },
+                "is_exercise_completed": {
+                    "type": "boolean"
                 }
             }
         },
@@ -904,6 +1016,30 @@ const docTemplate = `{
             "properties": {
                 "is_onboarding_completed": {
                     "type": "boolean"
+                }
+            }
+        },
+        "models.UserExerciseHistory": {
+            "type": "object",
+            "properties": {
+                "exercise_date": {
+                    "description": "운동일",
+                    "type": "string"
+                },
+                "exercise_ended_at": {
+                    "description": "운동 종료 시간",
+                    "type": "string"
+                },
+                "exercise_started_at": {
+                    "description": "운동 시작 시간",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "user_id": {
+                    "description": "사용자 ID",
+                    "type": "integer"
                 }
             }
         }
