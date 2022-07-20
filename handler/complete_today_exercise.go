@@ -55,7 +55,7 @@ func completeTodayExercise(db *sql.DB) echo.HandlerFunc {
 		}
 
 		if req.Code == 1 { // 운동 시작
-			if history.ExerciseDate == nowDate {
+			if history != nil && history.ExerciseDate == nowDate {
 				return c.JSON(http.StatusBadRequest, message{"이미 시작된 당일 운동이 있습니다."})
 			}
 			if err := (&models.UserExerciseHistory{
@@ -68,8 +68,11 @@ func completeTodayExercise(db *sql.DB) echo.HandlerFunc {
 		}
 
 		if req.Code == 2 { // 운동 종료
+			if history == nil {
+				return c.JSON(http.StatusBadRequest, message{"종료할 운동이 없습니다."})
+			}
 			if history.ExerciseEndedAt.Valid {
-				return c.JSON(http.StatusBadRequest, message{"이미 당일 운동이 종료되었습니다."})
+				return c.JSON(http.StatusBadRequest, message{"이미 최근 운동이 종료되었습니다."})
 			}
 			history.ExerciseEndedAt = null.TimeFrom(time.Now())
 			if _, err := history.Update(ctx, db, boil.Infer()); err != nil {
