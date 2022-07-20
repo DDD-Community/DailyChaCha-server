@@ -9,11 +9,23 @@ import (
 	"github.com/DDD-Community/DailyChaCha-server/models"
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
+	"github.com/volatiletech/null/v8"
 )
 
+type UserExercise struct {
+	// 사용자 ID
+	UserID int64 `boil:"user_id" json:"user_id" toml:"user_id" yaml:"user_id"`
+	// 운동일
+	ExerciseDate time.Time `boil:"exercise_date" json:"exercise_date" toml:"exercise_date" yaml:"exercise_date"`
+	// 운동 시작 시간
+	ExerciseStartedAt time.Time `boil:"exercise_started_at" json:"exercise_started_at" toml:"exercise_started_at" yaml:"exercise_started_at"`
+	// 운동 종료 시간
+	ExerciseEndedAt null.Time `boil:"exercise_ended_at" json:"exercise_ended_at,omitempty" toml:"exercise_ended_at" yaml:"exercise_ended_at,omitempty"`
+}
+
 type GetTodayExerciseResponse struct {
-	Exercise            *models.UserExerciseHistory `json:"exercise"`
-	IsExerciseCompleted bool                        `json:"is_exercise_completed"`
+	Exercise            *UserExercise `json:"exercise"`
+	IsExerciseCompleted bool          `json:"is_exercise_completed"`
 }
 
 // @Summary 유저의 당일 운동정보를 가져오는 API
@@ -49,8 +61,15 @@ func getTodayExercise(db *sql.DB) echo.HandlerFunc {
 		}
 		if history != nil {
 			resp = GetTodayExerciseResponse{
-				Exercise:            history,
+				Exercise: &UserExercise{
+					UserID:            history.UserID,
+					ExerciseDate:      history.ExerciseDate,
+					ExerciseStartedAt: history.ExerciseStartedAt.In(kst),
+				},
 				IsExerciseCompleted: history.ExerciseEndedAt.Valid,
+			}
+			if history.ExerciseEndedAt.Valid {
+				resp.Exercise.ExerciseEndedAt = null.TimeFrom(history.ExerciseEndedAt.Time.In(kst))
 			}
 		}
 

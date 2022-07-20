@@ -27,7 +27,7 @@ var kst, _ = time.LoadLocation("Asia/Seoul")
 // @Produce json
 // @Security ApiKeyAuth
 // @param Authorization header string true "bearer {token}"
-// @Param req body CompleteTodayExerciseRequest true "요청"
+// @Param req body CompleteTodayExerciseRequest true "요청(1: 운동시작, 2: 운동종료)"
 // @Success 200 {object} message
 // @Failure 500 {object} message
 // @Router /exercises/today [post]
@@ -52,6 +52,9 @@ func completeTodayExercise(db *sql.DB) echo.HandlerFunc {
 		).One(ctx, db)
 		if err != nil && errors.Cause(err) != sql.ErrNoRows {
 			return echo.ErrInternalServerError
+		}
+		if req.Code != 1 && req.Code != 2 {
+			return c.JSON(http.StatusBadRequest, message{"잘못된 코드입니다."})
 		}
 
 		if req.Code == 1 { // 운동 시작

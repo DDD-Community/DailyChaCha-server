@@ -301,7 +301,7 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "요청",
+                        "description": "요청(1: 운동시작, 2: 운동종료)",
                         "name": "req",
                         "in": "body",
                         "required": true,
@@ -825,7 +825,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "exercise": {
-                    "$ref": "#/definitions/models.UserExerciseHistory"
+                    "$ref": "#/definitions/handler.UserExercise"
                 },
                 "is_exercise_completed": {
                     "type": "boolean"
@@ -957,6 +957,27 @@ const docTemplate = `{
                 }
             }
         },
+        "handler.UserExercise": {
+            "type": "object",
+            "properties": {
+                "exercise_date": {
+                    "description": "운동일",
+                    "type": "string"
+                },
+                "exercise_ended_at": {
+                    "description": "운동 종료 시간",
+                    "type": "string"
+                },
+                "exercise_started_at": {
+                    "description": "운동 시작 시간",
+                    "type": "string"
+                },
+                "user_id": {
+                    "description": "사용자 ID",
+                    "type": "integer"
+                }
+            }
+        },
         "handler.UserObject": {
             "type": "object",
             "properties": {
@@ -1016,30 +1037,6 @@ const docTemplate = `{
             "properties": {
                 "is_onboarding_completed": {
                     "type": "boolean"
-                }
-            }
-        },
-        "models.UserExerciseHistory": {
-            "type": "object",
-            "properties": {
-                "exercise_date": {
-                    "description": "운동일",
-                    "type": "string"
-                },
-                "exercise_ended_at": {
-                    "description": "운동 종료 시간",
-                    "type": "string"
-                },
-                "exercise_started_at": {
-                    "description": "운동 시작 시간",
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "user_id": {
-                    "description": "사용자 ID",
-                    "type": "integer"
                 }
             }
         }
