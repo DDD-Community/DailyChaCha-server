@@ -50,7 +50,7 @@ type ListUserObjectsResponse struct {
 func listUserObjects(db *sql.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ctx := c.Request().Context()
-		_, err := helper.ValidateJWT(c, db)
+		chaUser, err := helper.ValidateJWT(c, db)
 		if err != nil {
 			return err
 		}
@@ -64,41 +64,70 @@ func listUserObjects(db *sql.DB) echo.HandlerFunc {
 		if err != nil {
 			return echo.ErrInternalServerError
 		}
-		for i, o := range objects {
+
+		displayOrder := 1
+		for _, o := range objects {
 			resp.Objects = append(resp.Objects, &UserObject{
 				ID:           o.ID,
 				ImageURL:     o.ImageURL,
 				ObjectType:   o.ObjectType,
 				ObjectName:   o.ObjectName,
-				DisplayOrder: i + 1,
+				DisplayOrder: displayOrder,
 			})
+			displayOrder++
 		}
-		for i, o := range objects {
+		for _, o := range objects {
 			resp.Objects = append(resp.Objects, &UserObject{
 				ID:           o.ID,
 				ImageURL:     o.ImageURL,
 				ObjectType:   o.ObjectType,
 				ObjectName:   o.ObjectName,
-				DisplayOrder: i + len(objects) + 1,
+				DisplayOrder: displayOrder,
 			})
+			displayOrder++
 		}
-		for i, o := range objects {
+		for _, o := range objects {
 			resp.Objects = append(resp.Objects, &UserObject{
 				ID:           o.ID,
 				ImageURL:     o.ImageURL,
 				ObjectType:   o.ObjectType,
 				ObjectName:   o.ObjectName,
-				DisplayOrder: i + len(objects)*2 + 1,
+				DisplayOrder: displayOrder,
 			})
+			displayOrder++
 		}
-		for i, o := range objects {
+		for _, o := range objects {
 			resp.Objects = append(resp.Objects, &UserObject{
 				ID:           o.ID,
 				ImageURL:     o.ImageURL,
 				ObjectType:   o.ObjectType,
 				ObjectName:   o.ObjectName,
-				DisplayOrder: i + len(objects)*3 + 1,
+				DisplayOrder: displayOrder,
 			})
+			displayOrder++
+		}
+
+		userObjects, err := models.UserObjects(
+			models.UserObjectWhere.UserID.EQ(int64(chaUser.ID)),
+		).All(ctx, db)
+		if err != nil {
+			return echo.ErrInternalServerError
+		}
+		for _, o := range userObjects {
+			object, err := models.Objects(
+				models.ObjectWhere.ID.EQ(o.ObjectID),
+			).One(ctx, db)
+			if err != nil {
+				return echo.ErrInternalServerError
+			}
+			resp.Objects = append(resp.Objects, &UserObject{
+				ID:           object.ID,
+				ImageURL:     object.ImageURL,
+				ObjectType:   object.ObjectType,
+				ObjectName:   object.ObjectName,
+				DisplayOrder: displayOrder,
+			})
+			displayOrder++
 		}
 
 		resp.Backgrounds = []*UserBackground{

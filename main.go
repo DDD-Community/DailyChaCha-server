@@ -1,6 +1,9 @@
 package main
 
 import (
+	"math/rand"
+	"time"
+
 	"github.com/DDD-Community/DailyChaCha-server/db"
 	"github.com/DDD-Community/DailyChaCha-server/handler"
 	"github.com/joho/godotenv"
@@ -21,6 +24,7 @@ func main() {
 	if err := godotenv.Load(".env"); err != nil {
 		logrus.Info(err)
 	}
+	rand.Seed(time.Now().UnixNano())
 	e := echo.New()
 
 	db := db.Connect()

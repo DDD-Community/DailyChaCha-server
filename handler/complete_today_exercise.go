@@ -3,6 +3,7 @@ package handler
 import (
 	"database/sql"
 	"fmt"
+	"math/rand"
 	"net/http"
 	"time"
 
@@ -19,6 +20,10 @@ type CompleteTodayExerciseRequest struct {
 	Code int64 `json:"code"`
 }
 
+type CompleteTodayExerciseResponse struct {
+	Object *models.Object `json:"object_image_url"`
+}
+
 var kst, _ = time.LoadLocation("Asia/Seoul")
 
 // @Summary 당일 운동시작, 종료 API
@@ -28,7 +33,7 @@ var kst, _ = time.LoadLocation("Asia/Seoul")
 // @Security ApiKeyAuth
 // @param Authorization header string true "bearer {token}"
 // @Param req body CompleteTodayExerciseRequest true "요청(1: 운동시작, 2: 운동종료)"
-// @Success 200 {object} message
+// @Success 200 {object} CompleteTodayExerciseResponse
 // @Failure 500 {object} message
 // @Router /exercises/today [post]
 func completeTodayExercise(db *sql.DB) echo.HandlerFunc {
@@ -81,6 +86,23 @@ func completeTodayExercise(db *sql.DB) echo.HandlerFunc {
 			if _, err := history.Update(ctx, db, boil.Infer()); err != nil {
 				return errors.Wrap(err, "update")
 			}
+			objects, err := models.Objects(
+				models.ObjectWhere.ObjectType.EQ("normal"),
+			).All(ctx, db)
+			if err != nil {
+				return echo.ErrInternalServerError
+			}
+
+			userObject := objects[rand.Intn(len(objects))]
+			if err := (&models.UserObject{
+				UserID:   int64(chaUser.ID),
+				ObjectID: userObject.ID,
+			}).Insert(ctx, db, boil.Infer()); err != nil {
+				return c.JSON(http.StatusInternalServerError, message{"Failed insert user exercise history"})
+			}
+			return c.JSON(http.StatusOK, CompleteTodayExerciseResponse{
+				Object: userObject,
+			})
 		}
 
 		if err := c.JSON(http.StatusOK, message{"success"}); err != nil {

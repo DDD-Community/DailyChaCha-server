@@ -314,7 +314,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/handler.message"
+                            "$ref": "#/definitions/handler.CompleteTodayExerciseResponse"
                         }
                     },
                     "500": {
@@ -802,6 +802,14 @@ const docTemplate = `{
                 }
             }
         },
+        "handler.CompleteTodayExerciseResponse": {
+            "type": "object",
+            "properties": {
+                "object_image_url": {
+                    "$ref": "#/definitions/models.Object"
+                }
+            }
+        },
         "handler.CreateExerciseDateRequest": {
             "type": "object",
             "properties": {
@@ -1037,6 +1045,26 @@ const docTemplate = `{
             "properties": {
                 "is_onboarding_completed": {
                     "type": "boolean"
+                }
+            }
+        },
+        "models.Object": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "image_url": {
+                    "description": "이미지 URL",
+                    "type": "string"
+                },
+                "object_name": {
+                    "description": "오브젝트 이름",
+                    "type": "string"
+                },
+                "object_type": {
+                    "description": "오브젝트 유형",
+                    "type": "string"
                 }
             }
         }
