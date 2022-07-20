@@ -805,7 +805,7 @@ const docTemplate = `{
         "handler.CompleteTodayExerciseResponse": {
             "type": "object",
             "properties": {
-                "object_image_url": {
+                "object": {
                     "$ref": "#/definitions/models.Object"
                 }
             }

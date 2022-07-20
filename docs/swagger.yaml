@@ -12,7 +12,7 @@ definitions:
     type: object
   handler.CompleteTodayExerciseResponse:
     properties:
-      object_image_url:
+      object:
         $ref: '#/definitions/models.Object'
     type: object
   handler.CreateExerciseDateRequest:

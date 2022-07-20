@@ -21,7 +21,7 @@ type CompleteTodayExerciseRequest struct {
 }
 
 type CompleteTodayExerciseResponse struct {
-	Object *models.Object `json:"object_image_url"`
+	Object *models.Object `json:"object"`
 }
 
 var kst, _ = time.LoadLocation("Asia/Seoul")
