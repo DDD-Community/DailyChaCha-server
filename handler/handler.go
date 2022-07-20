@@ -58,7 +58,7 @@ func ApplyHandler(e *echo.Echo, db *sql.DB) {
 	e.POST("/api/exercises/today", completeTodayExercise(db))
 
 	// 홈 - 당일 운동정보
-	e.GET("/api/next-exercise", getTodayExercise(db))
+	e.GET("/api/exercises/today", getTodayExercise(db))
 
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 }
