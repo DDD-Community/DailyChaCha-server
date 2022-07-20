@@ -28,41 +28,49 @@ type UserObject struct { // ID
 	UserID int64 `boil:"user_id" json:"user_id" toml:"user_id" yaml:"user_id"`
 	// 오브젝트 ID
 	ObjectID int64 `boil:"object_id" json:"object_id" toml:"object_id" yaml:"object_id"`
+	// 생성 일시
+	CreatedAt time.Time `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
 
 	R *userObjectR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L userObjectL  `boil:"-" json:"-" toml:"-" yaml:"-"`
 }
 
 var UserObjectColumns = struct {
-	ID       string
-	UserID   string
-	ObjectID string
+	ID        string
+	UserID    string
+	ObjectID  string
+	CreatedAt string
 }{
-	ID:       "id",
-	UserID:   "user_id",
-	ObjectID: "object_id",
+	ID:        "id",
+	UserID:    "user_id",
+	ObjectID:  "object_id",
+	CreatedAt: "created_at",
 }
 
 var UserObjectTableColumns = struct {
-	ID       string
-	UserID   string
-	ObjectID string
+	ID        string
+	UserID    string
+	ObjectID  string
+	CreatedAt string
 }{
-	ID:       "user_objects.id",
-	UserID:   "user_objects.user_id",
-	ObjectID: "user_objects.object_id",
+	ID:        "user_objects.id",
+	UserID:    "user_objects.user_id",
+	ObjectID:  "user_objects.object_id",
+	CreatedAt: "user_objects.created_at",
 }
 
 // Generated where
 
 var UserObjectWhere = struct {
-	ID       whereHelperint64
-	UserID   whereHelperint64
-	ObjectID whereHelperint64
+	ID        whereHelperint64
+	UserID    whereHelperint64
+	ObjectID  whereHelperint64
+	CreatedAt whereHelpertime_Time
 }{
-	ID:       whereHelperint64{field: "`user_objects`.`id`"},
-	UserID:   whereHelperint64{field: "`user_objects`.`user_id`"},
-	ObjectID: whereHelperint64{field: "`user_objects`.`object_id`"},
+	ID:        whereHelperint64{field: "`user_objects`.`id`"},
+	UserID:    whereHelperint64{field: "`user_objects`.`user_id`"},
+	ObjectID:  whereHelperint64{field: "`user_objects`.`object_id`"},
+	CreatedAt: whereHelpertime_Time{field: "`user_objects`.`created_at`"},
 }
 
 // UserObjectRels is where relationship names are stored.
@@ -82,9 +90,9 @@ func (*userObjectR) NewStruct() *userObjectR {
 type userObjectL struct{}
 
 var (
-	userObjectAllColumns            = []string{"id", "user_id", "object_id"}
+	userObjectAllColumns            = []string{"id", "user_id", "object_id", "created_at"}
 	userObjectColumnsWithoutDefault = []string{"user_id", "object_id"}
-	userObjectColumnsWithDefault    = []string{"id"}
+	userObjectColumnsWithDefault    = []string{"id", "created_at"}
 	userObjectPrimaryKeyColumns     = []string{"id"}
 	userObjectGeneratedColumns      = []string{}
 )
@@ -411,6 +419,13 @@ func (o *UserObject) Insert(ctx context.Context, exec boil.ContextExecutor, colu
 	}
 
 	var err error
+	if !boil.TimestampsAreSkipped(ctx) {
+		currTime := time.Now().In(boil.GetLocation())
+
+		if o.CreatedAt.IsZero() {
+			o.CreatedAt = currTime
+		}
+	}
 
 	if err := o.doBeforeInsertHooks(ctx, exec); err != nil {
 		return err
@@ -646,6 +661,13 @@ var mySQLUserObjectUniqueColumns = []string{
 func (o *UserObject) Upsert(ctx context.Context, exec boil.ContextExecutor, updateColumns, insertColumns boil.Columns) error {
 	if o == nil {
 		return errors.New("models: no user_objects provided for upsert")
+	}
+	if !boil.TimestampsAreSkipped(ctx) {
+		currTime := time.Now().In(boil.GetLocation())
+
+		if o.CreatedAt.IsZero() {
+			o.CreatedAt = currTime
+		}
 	}
 
 	if err := o.doBeforeUpsertHooks(ctx, exec); err != nil {

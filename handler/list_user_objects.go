@@ -2,12 +2,14 @@ package handler
 
 import (
 	"database/sql"
+	"fmt"
 	"net/http"
 
 	"github.com/DDD-Community/DailyChaCha-server/helper"
 	"github.com/DDD-Community/DailyChaCha-server/models"
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
+	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
 
 type UserObject struct {
@@ -66,49 +68,10 @@ func listUserObjects(db *sql.DB) echo.HandlerFunc {
 		}
 
 		displayOrder := 1
-		for _, o := range objects {
-			resp.Objects = append(resp.Objects, &UserObject{
-				ID:           o.ID,
-				ImageURL:     o.ImageURL,
-				ObjectType:   o.ObjectType,
-				ObjectName:   o.ObjectName,
-				DisplayOrder: displayOrder,
-			})
-			displayOrder++
-		}
-		for _, o := range objects {
-			resp.Objects = append(resp.Objects, &UserObject{
-				ID:           o.ID,
-				ImageURL:     o.ImageURL,
-				ObjectType:   o.ObjectType,
-				ObjectName:   o.ObjectName,
-				DisplayOrder: displayOrder,
-			})
-			displayOrder++
-		}
-		for _, o := range objects {
-			resp.Objects = append(resp.Objects, &UserObject{
-				ID:           o.ID,
-				ImageURL:     o.ImageURL,
-				ObjectType:   o.ObjectType,
-				ObjectName:   o.ObjectName,
-				DisplayOrder: displayOrder,
-			})
-			displayOrder++
-		}
-		for _, o := range objects {
-			resp.Objects = append(resp.Objects, &UserObject{
-				ID:           o.ID,
-				ImageURL:     o.ImageURL,
-				ObjectType:   o.ObjectType,
-				ObjectName:   o.ObjectName,
-				DisplayOrder: displayOrder,
-			})
-			displayOrder++
-		}
 
 		userObjects, err := models.UserObjects(
 			models.UserObjectWhere.UserID.EQ(int64(chaUser.ID)),
+			qm.OrderBy(fmt.Sprintf("%s DESC", models.UserObjectColumns.CreatedAt)),
 		).All(ctx, db)
 		if err != nil {
 			return echo.ErrInternalServerError
@@ -125,6 +88,47 @@ func listUserObjects(db *sql.DB) echo.HandlerFunc {
 				ImageURL:     object.ImageURL,
 				ObjectType:   object.ObjectType,
 				ObjectName:   object.ObjectName,
+				DisplayOrder: displayOrder,
+			})
+			displayOrder++
+		}
+
+		for _, o := range objects {
+			resp.Objects = append(resp.Objects, &UserObject{
+				ID:           o.ID,
+				ImageURL:     o.ImageURL,
+				ObjectType:   o.ObjectType,
+				ObjectName:   o.ObjectName,
+				DisplayOrder: displayOrder,
+			})
+			displayOrder++
+		}
+		for _, o := range objects {
+			resp.Objects = append(resp.Objects, &UserObject{
+				ID:           o.ID,
+				ImageURL:     o.ImageURL,
+				ObjectType:   o.ObjectType,
+				ObjectName:   o.ObjectName,
+				DisplayOrder: displayOrder,
+			})
+			displayOrder++
+		}
+		for _, o := range objects {
+			resp.Objects = append(resp.Objects, &UserObject{
+				ID:           o.ID,
+				ImageURL:     o.ImageURL,
+				ObjectType:   o.ObjectType,
+				ObjectName:   o.ObjectName,
+				DisplayOrder: displayOrder,
+			})
+			displayOrder++
+		}
+		for _, o := range objects {
+			resp.Objects = append(resp.Objects, &UserObject{
+				ID:           o.ID,
+				ImageURL:     o.ImageURL,
+				ObjectType:   o.ObjectType,
+				ObjectName:   o.ObjectName,
 				DisplayOrder: displayOrder,
 			})
 			displayOrder++
