@@ -5,11 +5,6 @@ definitions:
       token:
         type: string
     type: object
-  handler.CompleteTodayExerciseRequest:
-    properties:
-      code:
-        type: integer
-    type: object
   handler.CompleteTodayExerciseResponse:
     properties:
       object:
@@ -95,6 +90,11 @@ definitions:
       email:
         type: string
       password:
+        type: string
+    type: object
+  handler.StartTodayExerciseResponse:
+    properties:
+      started_at:
         type: string
     type: object
   handler.UpdateExerciseDateRequest:
@@ -330,6 +330,30 @@ paths:
       - ApiKeyAuth: []
       summary: 시간정하기 API
   /exercises/today:
+    delete:
+      consumes:
+      - application/json
+      description: 유저의 운동데이터를 삭제하는 API
+      parameters:
+      - description: bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.message'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.message'
+      security:
+      - ApiKeyAuth: []
+      summary: 당일 운동삭제 API
     get:
       consumes:
       - application/json
@@ -358,6 +382,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 유저의 당일 운동정보를 가져오는 API
+  /exercises/today/complete:
     post:
       consumes:
       - application/json
@@ -368,12 +393,6 @@ paths:
         name: Authorization
         required: true
         type: string
-      - description: '요청(1: 운동시작, 2: 운동종료)'
-        in: body
-        name: req
-        required: true
-        schema:
-          $ref: '#/definitions/handler.CompleteTodayExerciseRequest'
       produces:
       - application/json
       responses:
@@ -381,6 +400,31 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/handler.CompleteTodayExerciseResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.message'
+      security:
+      - ApiKeyAuth: []
+      summary: 당일 운동시작, 종료 API
+  /exercises/today/start:
+    post:
+      consumes:
+      - application/json
+      description: 유저의 운동의 시작과 종료 시간을 기록하는 API
+      parameters:
+      - description: bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.StartTodayExerciseResponse'
         "500":
           description: Internal Server Error
           schema:

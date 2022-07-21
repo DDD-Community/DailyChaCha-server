@@ -54,8 +54,14 @@ func ApplyHandler(e *echo.Echo, db *sql.DB) {
 	// 홈 - 다음 운동정보
 	e.GET("/api/next-exercise", getUserNextExercise(db))
 
-	// 스톱워치 - 당일 운동 시작, 종료
-	e.POST("/api/exercises/today", completeTodayExercise(db))
+	// 스톱워치 - 당일 운동 종료
+	e.POST("/api/exercises/today/complete", completeTodayExercise(db))
+
+	// 스톱워치 - 당일 운동 시작
+	e.POST("/api/exercises/today/start", startTodayExercise(db))
+
+	// 스톱워치 - 당일 운동 시작
+	e.DELETE("/api/exercises/today", deleteTodayExercise(db))
 
 	// 홈 - 당일 운동정보
 	e.GET("/api/exercises/today", getTodayExercise(db))

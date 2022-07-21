@@ -278,6 +278,46 @@ const docTemplate = `{
                     }
                 }
             },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "유저의 운동데이터를 삭제하는 API",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "당일 운동삭제 API",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "bearer {token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.message"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.message"
+                        }
+                    }
+                }
+            }
+        },
+        "/exercises/today/complete": {
             "post": {
                 "security": [
                     {
@@ -299,15 +339,6 @@ const docTemplate = `{
                         "name": "Authorization",
                         "in": "header",
                         "required": true
-                    },
-                    {
-                        "description": "요청(1: 운동시작, 2: 운동종료)",
-                        "name": "req",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/handler.CompleteTodayExerciseRequest"
-                        }
                     }
                 ],
                 "responses": {
@@ -315,6 +346,46 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/handler.CompleteTodayExerciseResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.message"
+                        }
+                    }
+                }
+            }
+        },
+        "/exercises/today/start": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "유저의 운동의 시작과 종료 시간을 기록하는 API",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "당일 운동시작, 종료 API",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "bearer {token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.StartTodayExerciseResponse"
                         }
                     },
                     "500": {
@@ -794,14 +865,6 @@ const docTemplate = `{
                 }
             }
         },
-        "handler.CompleteTodayExerciseRequest": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                }
-            }
-        },
         "handler.CompleteTodayExerciseResponse": {
             "type": "object",
             "properties": {
@@ -934,6 +997,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.StartTodayExerciseResponse": {
+            "type": "object",
+            "properties": {
+                "started_at": {
                     "type": "string"
                 }
             }
