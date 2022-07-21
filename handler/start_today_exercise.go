@@ -19,7 +19,7 @@ type StartTodayExerciseResponse struct {
 }
 
 // @Summary 당일 운동시작, 종료 API
-// @Description 유저의 운동의 시작과 종료 시간을 기록하는 API
+// @Description 유저의 운동의 시작을 기록하는 API
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth

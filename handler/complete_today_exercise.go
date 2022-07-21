@@ -22,8 +22,8 @@ type CompleteTodayExerciseResponse struct {
 
 var kst, _ = time.LoadLocation("Asia/Seoul")
 
-// @Summary 당일 운동시작, 종료 API
-// @Description 유저의 운동의 시작과 종료 시간을 기록하는 API
+// @Summary 당일 운동종료 API
+// @Description 유저의 운동종료를 기록하는 API
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth

@@ -324,14 +324,14 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "유저의 운동의 시작과 종료 시간을 기록하는 API",
+                "description": "유저의 운동종료를 기록하는 API",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "당일 운동시작, 종료 API",
+                "summary": "당일 운동종료 API",
                 "parameters": [
                     {
                         "type": "string",
@@ -364,7 +364,7 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "유저의 운동의 시작과 종료 시간을 기록하는 API",
+                "description": "유저의 운동의 시작을 기록하는 API",
                 "consumes": [
                     "application/json"
                 ],
