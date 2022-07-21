@@ -37,9 +37,9 @@ func listGoals(db *sql.DB) echo.HandlerFunc {
 		if err != nil {
 			return err
 		}
-		firstIndex := 1
-		secondIndex := 2
-		thirdIndex := 3
+		firstIndex := 0
+		secondIndex := 1
+		thirdIndex := 2
 		goalList := []goal{
 			{"몸도 마음도 건강한 삶을 위해", &firstIndex},
 			{"루틴한 삶을 위해", &secondIndex},
