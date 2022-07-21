@@ -30,47 +30,55 @@ type UserObject struct { // ID
 	ObjectID int64 `boil:"object_id" json:"object_id" toml:"object_id" yaml:"object_id"`
 	// 생성 일시
 	CreatedAt time.Time `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
+	// 운동일
+	ExerciseDate time.Time `boil:"exercise_date" json:"exercise_date" toml:"exercise_date" yaml:"exercise_date"`
 
 	R *userObjectR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L userObjectL  `boil:"-" json:"-" toml:"-" yaml:"-"`
 }
 
 var UserObjectColumns = struct {
-	ID        string
-	UserID    string
-	ObjectID  string
-	CreatedAt string
+	ID           string
+	UserID       string
+	ObjectID     string
+	CreatedAt    string
+	ExerciseDate string
 }{
-	ID:        "id",
-	UserID:    "user_id",
-	ObjectID:  "object_id",
-	CreatedAt: "created_at",
+	ID:           "id",
+	UserID:       "user_id",
+	ObjectID:     "object_id",
+	CreatedAt:    "created_at",
+	ExerciseDate: "exercise_date",
 }
 
 var UserObjectTableColumns = struct {
-	ID        string
-	UserID    string
-	ObjectID  string
-	CreatedAt string
+	ID           string
+	UserID       string
+	ObjectID     string
+	CreatedAt    string
+	ExerciseDate string
 }{
-	ID:        "user_objects.id",
-	UserID:    "user_objects.user_id",
-	ObjectID:  "user_objects.object_id",
-	CreatedAt: "user_objects.created_at",
+	ID:           "user_objects.id",
+	UserID:       "user_objects.user_id",
+	ObjectID:     "user_objects.object_id",
+	CreatedAt:    "user_objects.created_at",
+	ExerciseDate: "user_objects.exercise_date",
 }
 
 // Generated where
 
 var UserObjectWhere = struct {
-	ID        whereHelperint64
-	UserID    whereHelperint64
-	ObjectID  whereHelperint64
-	CreatedAt whereHelpertime_Time
+	ID           whereHelperint64
+	UserID       whereHelperint64
+	ObjectID     whereHelperint64
+	CreatedAt    whereHelpertime_Time
+	ExerciseDate whereHelpertime_Time
 }{
-	ID:        whereHelperint64{field: "`user_objects`.`id`"},
-	UserID:    whereHelperint64{field: "`user_objects`.`user_id`"},
-	ObjectID:  whereHelperint64{field: "`user_objects`.`object_id`"},
-	CreatedAt: whereHelpertime_Time{field: "`user_objects`.`created_at`"},
+	ID:           whereHelperint64{field: "`user_objects`.`id`"},
+	UserID:       whereHelperint64{field: "`user_objects`.`user_id`"},
+	ObjectID:     whereHelperint64{field: "`user_objects`.`object_id`"},
+	CreatedAt:    whereHelpertime_Time{field: "`user_objects`.`created_at`"},
+	ExerciseDate: whereHelpertime_Time{field: "`user_objects`.`exercise_date`"},
 }
 
 // UserObjectRels is where relationship names are stored.
@@ -90,8 +98,8 @@ func (*userObjectR) NewStruct() *userObjectR {
 type userObjectL struct{}
 
 var (
-	userObjectAllColumns            = []string{"id", "user_id", "object_id", "created_at"}
-	userObjectColumnsWithoutDefault = []string{"user_id", "object_id"}
+	userObjectAllColumns            = []string{"id", "user_id", "object_id", "created_at", "exercise_date"}
+	userObjectColumnsWithoutDefault = []string{"user_id", "object_id", "exercise_date"}
 	userObjectColumnsWithDefault    = []string{"id", "created_at"}
 	userObjectPrimaryKeyColumns     = []string{"id"}
 	userObjectGeneratedColumns      = []string{}

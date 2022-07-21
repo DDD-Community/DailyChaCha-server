@@ -3,8 +3,10 @@ package handler
 import (
 	"database/sql"
 	"net/http"
+	"time"
 
 	"github.com/DDD-Community/DailyChaCha-server/helper"
+	"github.com/DDD-Community/DailyChaCha-server/models"
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
 )
@@ -27,18 +29,41 @@ type GetUserNextExerciseResponse struct {
 // @Router /next-exercise [get]
 func getUserNextExercise(db *sql.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		_, err := helper.ValidateJWT(c, db)
+		ctx := c.Request().Context()
+		chaUser, err := helper.ValidateJWT(c, db)
 		if err != nil {
 			return err
 		}
-		abs := "https://dailychacha.s3.ap-northeast-2.amazonaws.com/object03.png"
-		if err := c.JSON(http.StatusOK, GetUserNextExerciseResponse{
+		now := time.Now()
+		y, m, d := now.In(kst).Date()
+
+		nowDate := time.Date(y, m, d, 0, 0, 0, 0, time.UTC)
+		o, err := models.UserObjects(
+			models.UserObjectWhere.UserID.EQ(int64(chaUser.ID)),
+			models.UserObjectWhere.ExerciseDate.EQ(nowDate),
+		).One(ctx, db)
+		if err != nil && errors.Cause(err) != sql.ErrNoRows {
+			return echo.ErrInternalServerError
+		}
+
+		if o != nil {
+			object, err := models.Objects(
+				models.ObjectWhere.ID.EQ(o.ObjectID),
+			).One(ctx, db)
+			if err != nil && errors.Cause(err) != sql.ErrNoRows {
+				return echo.ErrInternalServerError
+			}
+
+			return c.JSON(http.StatusOK, GetUserNextExerciseResponse{
+				ContinuityExerciseDay: 12,
+				ExerciseRemainingTime: 36000,
+				ObjectImageURL:        &object.ImageURL,
+			})
+		}
+		return c.JSON(http.StatusOK, GetUserNextExerciseResponse{
 			ContinuityExerciseDay: 12,
 			ExerciseRemainingTime: 36000,
-			ObjectImageURL:        &abs,
-		}); err != nil {
-			return errors.Wrap(err, "healthCheck")
-		}
-		return nil
+			ObjectImageURL:        nil,
+		})
 	}
 }

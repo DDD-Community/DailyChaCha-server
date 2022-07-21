@@ -66,8 +66,9 @@ func completeTodayExercise(db *sql.DB) echo.HandlerFunc {
 
 		userObject := objects[rand.Intn(len(objects))]
 		if err := (&models.UserObject{
-			UserID:   int64(chaUser.ID),
-			ObjectID: userObject.ID,
+			UserID:       int64(chaUser.ID),
+			ObjectID:     userObject.ID,
+			ExerciseDate: history.ExerciseDate,
 		}).Insert(ctx, db, boil.Infer()); err != nil {
 			return c.JSON(http.StatusInternalServerError, message{"Failed insert user exercise history"})
 		}
