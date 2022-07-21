@@ -52,13 +52,13 @@ func startTodayExercise(db *sql.DB) echo.HandlerFunc {
 		if err := (&models.UserExerciseHistory{
 			UserID:            int64(chaUser.ID),
 			ExerciseDate:      nowDate,
-			ExerciseStartedAt: now,
+			ExerciseStartedAt: now.Truncate(time.Second),
 		}).Insert(ctx, db, boil.Infer()); err != nil {
 			return c.JSON(http.StatusInternalServerError, message{"Failed insert user exercise history"})
 		}
 
 		if err := c.JSON(http.StatusOK, StartTodayExerciseResponse{
-			StartedAt: now.In(kst),
+			StartedAt: now.Truncate(time.Second).In(kst),
 		}); err != nil {
 			return errors.Wrap(err, "healthCheck")
 		}
