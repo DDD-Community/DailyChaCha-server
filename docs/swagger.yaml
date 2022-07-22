@@ -11,6 +11,8 @@ definitions:
         type: string
       object:
         $ref: '#/definitions/models.Object'
+      started_at:
+        type: string
     type: object
   handler.CreateExerciseDateRequest:
     properties:

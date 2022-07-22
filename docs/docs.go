@@ -873,6 +873,9 @@ const docTemplate = `{
                 },
                 "object": {
                     "$ref": "#/definitions/models.Object"
+                },
+                "started_at": {
+                    "type": "string"
                 }
             }
         },

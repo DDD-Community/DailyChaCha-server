@@ -18,6 +18,7 @@ import (
 
 type CompleteTodayExerciseResponse struct {
 	Object      *models.Object `json:"object"`
+	StartedAt   time.Time      `json:"started_at"`
 	CompletedAt time.Time      `json:"completed_at"`
 }
 
@@ -76,6 +77,7 @@ func completeTodayExercise(db *sql.DB) echo.HandlerFunc {
 		}
 		return c.JSON(http.StatusOK, CompleteTodayExerciseResponse{
 			Object:      userObject,
+			StartedAt:   history.ExerciseStartedAt.In(kst),
 			CompletedAt: now.In(kst),
 		})
 	}
