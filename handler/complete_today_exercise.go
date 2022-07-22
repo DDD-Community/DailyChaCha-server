@@ -17,7 +17,8 @@ import (
 )
 
 type CompleteTodayExerciseResponse struct {
-	Object *models.Object `json:"object"`
+	Object      *models.Object `json:"object"`
+	CompletedAt time.Time      `json:"completed_at"`
 }
 
 var kst, _ = time.LoadLocation("Asia/Seoul")
@@ -53,7 +54,8 @@ func completeTodayExercise(db *sql.DB) echo.HandlerFunc {
 		if history.ExerciseEndedAt.Valid {
 			return c.JSON(http.StatusBadRequest, message{"이미 최근 운동이 종료되었습니다."})
 		}
-		history.ExerciseEndedAt = null.TimeFrom(time.Now())
+		now := time.Now().Truncate(time.Second)
+		history.ExerciseEndedAt = null.TimeFrom(now)
 		if _, err := history.Update(ctx, db, boil.Infer()); err != nil {
 			return errors.Wrap(err, "update")
 		}
@@ -73,7 +75,8 @@ func completeTodayExercise(db *sql.DB) echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, message{"Failed insert user exercise history"})
 		}
 		return c.JSON(http.StatusOK, CompleteTodayExerciseResponse{
-			Object: userObject,
+			Object:      userObject,
+			CompletedAt: now.In(kst),
 		})
 	}
 }
