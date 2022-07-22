@@ -2,6 +2,7 @@ package handler
 
 import (
 	"database/sql"
+	"fmt"
 	"net/http"
 
 	"github.com/DDD-Community/DailyChaCha-server/helper"
@@ -63,9 +64,10 @@ func getOnboardingProgress(db *sql.DB) echo.HandlerFunc {
 				}
 			}
 		}
+		fmt.Println(progress)
 
 		if err := c.JSON(http.StatusOK, GetOnboardingProgressResponse{
-			Progress: progress,
+			Progress: "goal",
 		}); err != nil {
 			return errors.Wrap(err, "healthCheck")
 		}
