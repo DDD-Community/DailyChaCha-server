@@ -24,12 +24,12 @@ type onboardingStatus struct {
 // @Router /status [get]
 func getOnboardingStatus(db *sql.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		chaUser, err := helper.ValidateJWT(c, db)
+		_, err := helper.ValidateJWT(c, db)
 		if err != nil {
 			return err
 		}
 		if err := c.JSON(http.StatusOK, onboardingStatus{
-			IsOnboardingCompleted: chaUser.IsOnboardingCompleted.Bool,
+			IsOnboardingCompleted: false, // chaUser.IsOnboardingCompleted.Bool,
 		}); err != nil {
 			return errors.Wrap(err, "healthCheck")
 		}
