@@ -40,6 +40,14 @@ func deleteTodayExercise(db *sql.DB) echo.HandlerFunc {
 			return echo.ErrInternalServerError
 		}
 
+		_, err = models.UserObjects(
+			models.UserObjectWhere.UserID.EQ(int64(chaUser.ID)),
+			models.UserObjectWhere.ExerciseDate.EQ(nowDate),
+		).DeleteAll(ctx, db)
+		if err != nil {
+			return echo.ErrInternalServerError
+		}
+
 		if err := c.JSON(http.StatusOK, message{"success"}); err != nil {
 			return errors.Wrap(err, "healthCheck")
 		}
