@@ -610,6 +610,31 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 온보딩 진행상황 API
+  /reset:
+    delete:
+      consumes:
+      - application/json
+      description: 유저의 모든 데이터를 초기화하는 API
+      parameters:
+      - description: bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.message'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.message'
+      security:
+      - ApiKeyAuth: []
+      summary: 유저 데이터 초기화 API
   /sign-in:
     post:
       consumes:

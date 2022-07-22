@@ -66,5 +66,8 @@ func ApplyHandler(e *echo.Echo, db *sql.DB) {
 	// 홈 - 당일 운동정보
 	e.GET("/api/exercises/today", getTodayExercise(db))
 
+	// 유저 데이터 초기화
+	e.DELETE("/api/reset", resetUserData(db))
+
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 }
