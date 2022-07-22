@@ -868,6 +868,9 @@ const docTemplate = `{
         "handler.CompleteTodayExerciseResponse": {
             "type": "object",
             "properties": {
+                "completed_at": {
+                    "type": "string"
+                },
                 "object": {
                     "$ref": "#/definitions/models.Object"
                 }

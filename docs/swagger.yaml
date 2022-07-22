@@ -7,6 +7,8 @@ definitions:
     type: object
   handler.CompleteTodayExerciseResponse:
     properties:
+      completed_at:
+        type: string
       object:
         $ref: '#/definitions/models.Object'
     type: object
