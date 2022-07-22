@@ -103,36 +103,6 @@ func listUserObjects(db *sql.DB) echo.HandlerFunc {
 			})
 			displayOrder++
 		}
-		for _, o := range objects {
-			resp.Objects = append(resp.Objects, &UserObject{
-				ID:           o.ID,
-				ImageURL:     o.ImageURL,
-				ObjectType:   o.ObjectType,
-				ObjectName:   o.ObjectName,
-				DisplayOrder: displayOrder,
-			})
-			displayOrder++
-		}
-		for _, o := range objects {
-			resp.Objects = append(resp.Objects, &UserObject{
-				ID:           o.ID,
-				ImageURL:     o.ImageURL,
-				ObjectType:   o.ObjectType,
-				ObjectName:   o.ObjectName,
-				DisplayOrder: displayOrder,
-			})
-			displayOrder++
-		}
-		for _, o := range objects {
-			resp.Objects = append(resp.Objects, &UserObject{
-				ID:           o.ID,
-				ImageURL:     o.ImageURL,
-				ObjectType:   o.ObjectType,
-				ObjectName:   o.ObjectName,
-				DisplayOrder: displayOrder,
-			})
-			displayOrder++
-		}
 
 		resp.Backgrounds = []*UserBackground{
 			{
