@@ -67,7 +67,7 @@ func getOnboardingProgress(db *sql.DB) echo.HandlerFunc {
 		fmt.Println(progress)
 
 		if err := c.JSON(http.StatusOK, GetOnboardingProgressResponse{
-			Progress: "goal",
+			Progress: progress,
 		}); err != nil {
 			return errors.Wrap(err, "healthCheck")
 		}

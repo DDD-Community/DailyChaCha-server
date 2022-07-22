@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"net/http"
+	"sort"
 
 	"github.com/DDD-Community/DailyChaCha-server/helper"
 	"github.com/DDD-Community/DailyChaCha-server/models"
@@ -92,6 +93,10 @@ func listUserObjects(db *sql.DB) echo.HandlerFunc {
 			})
 			displayOrder++
 		}
+
+		sort.Slice(objects, func(i, j int) bool {
+			return objects[i].ID > objects[j].ID
+		})
 
 		for _, o := range objects {
 			resp.Objects = append(resp.Objects, &UserObject{
